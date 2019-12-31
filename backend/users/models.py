@@ -30,3 +30,20 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
 
     def __str__(self):
         return self.email
+
+
+class GitHubProfile(models.Model):
+    id = models.PositiveIntegerField(primary_key=True, help_text=_('Github profile ID'))
+
+    user = models.OneToOneField('users.User', on_delete=models.CASCADE)
+
+    login = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    avatar_url = models.URLField(blank=True, default='')
+
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+
+    def __str__(self):
+        return self.name if self.name else self.login
