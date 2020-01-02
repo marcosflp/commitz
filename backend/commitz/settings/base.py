@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django_js_reverse',
     'webpack_loader',
     'import_export',
+    'social_django',
 
     'common',
     'users',
@@ -55,6 +56,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'commitz.urls'
 
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -72,6 +77,11 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 WSGI_APPLICATION = 'commitz.wsgi.application'
 
@@ -127,3 +137,9 @@ CELERY_ACKS_LATE = True
 # Sentry
 SENTRY_DSN = config('SENTRY_DSN', default='')
 COMMIT_SHA = config('HEROKU_SLUG_COMMIT', default='')
+
+# Social Auth
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+SOCIAL_AUTH_GITHUB_KEY = config('SOCIAL_AUTH_GITHUB_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = config('SOCIAL_AUTH_GITHUB_SECRET')
+SOCIAL_AUTH_GITHUB_EXTRA_DATA = ['name', 'email', 'avatar_url']

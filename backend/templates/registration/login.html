@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+  <div class="container-fluid">
+    <div class="login-box">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">CommitZ</h5>
+          {# TODO: Adicionar textos reais #}
+          {#          <h6 class="card-subtitle mb-2 text-muted">Subtitulo do card</h6>#}
+          {#          <p class="card-text">#}
+          {#            Gerenciardor de Commits#}
+          {#          </p>#}
+          <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block styles %}
+  <style>
+    .login-box {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+
+      padding-right: 2rem;
+      height: 100vh;
+    }
+
+    .login-box .card {
+      width: 30rem;
+    }
+  </style>
+{% endblock %}
