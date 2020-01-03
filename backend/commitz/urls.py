@@ -15,5 +15,7 @@ urlpatterns = [
     url('^login/$', LoginView.as_view(), name='login'),
     url('^logout/$', LogoutView.as_view(), name='logout'),
 
+    url('^api/', include('core.urls')),
+
     url(r'^$', login_required(TemplateView.as_view(template_name='core/home.html')), name='home'),
 ]

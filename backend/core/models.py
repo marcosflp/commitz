@@ -1,5 +1,7 @@
 from django.db import models
 
+from core.managers import CommitManager
+
 
 class Repository(models.Model):
     github_id = models.PositiveIntegerField(unique=True, null=True)
@@ -33,6 +35,8 @@ class Commit(models.Model):
 
     author = models.ForeignKey('users.User', null=True, blank=True, on_delete=models.SET_NULL)
     authored_date = models.DateTimeField(null=True, blank=True)
+
+    objects = CommitManager()
 
     def __str__(self):
         return f'{self.sha}'

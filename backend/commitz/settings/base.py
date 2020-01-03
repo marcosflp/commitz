@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'webpack_loader',
     'import_export',
     'social_django',
+    'rest_framework',
+    'django_filters',
 
     'common',
     'users',
@@ -109,6 +111,12 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ]
+}
 
 STATICFILES_DIRS = (
     base_dir_join('../frontend'),

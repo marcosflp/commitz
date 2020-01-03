@@ -6,7 +6,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 def create_from_social_auth(user, github_profile_data):
-    fields = ['id', 'login', 'name', 'email', 'created_at', 'updated_at']
+    fields = ['id', 'login', 'name', 'email', 'avatar_url', 'created_at', 'updated_at']
     defaults = {}
     for field_name in fields:
         defaults[field_name] = github_profile_data[field_name]
