@@ -39,7 +39,7 @@ class GitHubProfile(models.Model):
 
     login = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(blank=True, null=True)
     avatar_url = models.URLField(blank=True, default='')
 
     created_at = models.DateTimeField()
