@@ -8,3 +8,4 @@ pre-commit
 prospector[with-vulture]
 safety
 psycopg2-binary
+django_extensions

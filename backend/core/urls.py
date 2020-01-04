@@ -1,9 +1,10 @@
 from rest_framework import routers
 
-from core.views import CommitListViewSet
+from core.views import HomeViewSet, RepositoryViewSet
 
 api_routes = routers.DefaultRouter()
-api_routes.register(r'commits/home', CommitListViewSet)
+api_routes.register(r'home', HomeViewSet)
+api_routes.register(r'repositories', RepositoryViewSet)
 
 
 urlpatterns = api_routes.urls

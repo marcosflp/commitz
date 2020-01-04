@@ -1,8 +1,8 @@
 from rest_framework import serializers
-
+from django.utils.translation import ugettext_lazy as _
 
 from core.models import Commit, Repository
-from users.serializers import AuthorCommitListSerializer
+from users.serializers import AuthorHomeSerializer
 
 
 class RepositoryListSerializer(serializers.ModelSerializer):
@@ -11,10 +11,30 @@ class RepositoryListSerializer(serializers.ModelSerializer):
         fields = ('pk', 'name', 'full_name')
 
 
-class CommitListSerializer(serializers.ModelSerializer):
-    author = AuthorCommitListSerializer(read_only=True)
+class HomeSerializer(serializers.ModelSerializer):
+    author = AuthorHomeSerializer(read_only=True)
     repository = RepositoryListSerializer(read_only=True)
 
     class Meta:
         model = Commit
-        fields = ('sha', 'message', 'authored_date', 'author', 'repository')
+        fields = ('sha', 'message', 'author', 'authored_date', 'repository')
+
+
+class RepositorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Repository
+        fields = (
+            'pk', 'github_id', 'owner', 'name', 'full_name', 'description', 'language', 'stargazers_count',
+            'archived', 'disabled', 'clone_url', 'git_url', 'created_at', 'updated_at'
+        )
+
+
+class RepositoryRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Repository
+        fields = ('full_name',)
+
+    def validate_full_name(self, value):
+        if not value:
+            raise serializers.ValidationError(_('This field is required.'))
+        return value

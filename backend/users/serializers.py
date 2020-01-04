@@ -3,7 +3,7 @@ from rest_framework import serializers
 from users.models import User
 
 
-class AuthorCommitListSerializer(serializers.ModelSerializer):
+class AuthorHomeSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     avatar_url = serializers.SerializerMethodField(read_only=True)
 
