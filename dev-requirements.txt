@@ -12,6 +12,7 @@ cfgv==2.0.1               # via pre-commit
 chardet==3.0.4            # via requests
 click==7.0                # via safety
 coverage==5.0.1
+django-extensions==2.2.5
 django-naomi==0.8
 django==2.2.9
 dodgy==0.2.1              # via prospector
@@ -21,6 +22,7 @@ gitpython==3.0.5          # via bandit
 identify==1.4.9           # via pre-commit
 idna==2.8                 # via requests
 importlib-metadata==1.3.0  # via pre-commit
+importlib-resources==1.0.2  # via pre-commit
 isort==4.3.21
 lazy-object-proxy==1.4.3  # via astroid
 mccabe==0.6.1             # via prospector, pylint
@@ -48,7 +50,7 @@ requests==2.22.0          # via safety
 requirements-detector==0.6  # via prospector
 safety==1.8.5
 setoptconf==0.2.0         # via prospector
-six==1.13.0               # via astroid, bandit, cfgv, dparse, packaging, pre-commit, stevedore
+six==1.13.0               # via astroid, bandit, cfgv, django-extensions, dparse, packaging, pre-commit, stevedore
 smmap2==2.0.5             # via gitdb2
 snowballstemmer==2.0.0    # via pydocstyle
 sqlparse==0.3.0           # via django

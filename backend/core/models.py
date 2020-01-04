@@ -4,9 +4,10 @@ from core.managers import CommitManager
 
 
 class Repository(models.Model):
-    github_id = models.PositiveIntegerField(unique=True, null=True)
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='repositories')
 
-    owner = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    github_id = models.PositiveIntegerField(unique=True, null=True)
+    owner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='owner_repositories')
 
     name = models.CharField(max_length=100)
     full_name = models.CharField(max_length=100, unique=True, null=True)
@@ -23,18 +24,21 @@ class Repository(models.Model):
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
 
+    class Meta:
+        unique_together = ('user', 'github_id')
+
     def __str__(self):
         return self.full_name if self.full_name else self.name
 
 
 class Commit(models.Model):
-    sha = models.UUIDField()
+    sha = models.CharField(max_length=64, unique=True)
 
     repository = models.ForeignKey('core.Repository', on_delete=models.CASCADE)
     message = models.TextField(blank=True, default='')
 
-    author = models.ForeignKey('users.User', null=True, blank=True, on_delete=models.SET_NULL)
-    authored_date = models.DateTimeField(null=True, blank=True)
+    author = models.ForeignKey('users.User', null=True, blank=True, on_delete=models.PROTECT)
+    authored_date = models.DateTimeField()
 
     objects = CommitManager()
 
@@ -43,7 +47,7 @@ class Commit(models.Model):
 
 
 class Content(models.Model):
-    sha = models.UUIDField()
+    sha = models.CharField(max_length=64, unique=True)
     name = models.CharField(max_length=128)
 
     type = models.CharField(max_length=32, blank=True, default='')
