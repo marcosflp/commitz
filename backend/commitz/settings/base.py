@@ -33,12 +33,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
     'django_js_reverse',
     'webpack_loader',
     'import_export',
-    'social_django',
-    'rest_framework',
     'django_filters',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'social_django',
+    'rest_social_auth',
 
     'common',
     'users',
@@ -49,11 +52,13 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'commitz.urls'
@@ -147,7 +152,6 @@ SENTRY_DSN = config('SENTRY_DSN', default='')
 COMMIT_SHA = config('HEROKU_SLUG_COMMIT', default='')
 
 # Social Auth
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 SOCIAL_AUTH_GITHUB_KEY = config('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = config('SOCIAL_AUTH_GITHUB_SECRET')
 SOCIAL_AUTH_PIPELINE = (
@@ -162,3 +166,5 @@ SOCIAL_AUTH_PIPELINE = (
 
     'users.utils.pipeline_create_github_profile',
 )
+
+REST_SOCIAL_OAUTH_ABSOLUTE_REDIRECT_URI = config('REST_SOCIAL_OAUTH_ABSOLUTE_REDIRECT_URI')

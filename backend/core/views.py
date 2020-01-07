@@ -1,7 +1,4 @@
 import github
-
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -36,7 +33,7 @@ class RepositoryViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             try:
-                repository_service.register_new_repository(
+                repository = repository_service.register_new_repository(
                     user=request.user,
                     full_name=serializer.data['full_name'],
                     githubprofile_service=githubprofile_service,
@@ -44,6 +41,8 @@ class RepositoryViewSet(viewsets.ModelViewSet):
                 )
             except github.UnknownObjectException as e:  # Repository not found
                 return Response(e.data, status=e.status)
-            return HttpResponseRedirect(redirect_to=reverse('home'))
+            else:
+                data = {'message': _(f'Repositório "{repository}" registrado com sucesso.')}
+                return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)

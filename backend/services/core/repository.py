@@ -51,7 +51,7 @@ def register_new_repository(user, full_name, githubprofile_service, commit_servi
             repository,
         )
 
-    return None
+    return repository
 
 
 def get_repository_owner(user, full_name, githubprofile_service):

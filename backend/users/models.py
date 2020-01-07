@@ -8,7 +8,7 @@ from .managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
-    login = models.CharField(max_length=100, unique=True)
+    login = models.CharField(max_length=100, unique=True, null=True)
     email = models.EmailField(max_length=255, unique=True, null=True)
 
     is_staff = models.BooleanField(
@@ -22,7 +22,7 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'login'
+    USERNAME_FIELD = 'email'
 
     def get_full_name(self):
         return self.email
@@ -31,7 +31,7 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
         return self.email
 
     def __str__(self):
-        return self.login
+        return self.login or self.email
 
 
 class GitHubProfile(models.Model):
