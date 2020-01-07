@@ -1,6 +1,8 @@
 from .local_base import *  # noqa
 
 
+ALLOWED_HOSTS += ['*']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -10,7 +12,6 @@ DATABASES = {
         'PORT': 5432,
     }
 }
-
 
 INSTALLED_APPS += [
     'django_extensions'

@@ -14,8 +14,9 @@ whitenoise
 psutil
 ipython
 sentry-sdk
-social-auth-app-django
+rest-social-auth
 djangorestframework
 markdown
 django-filter
 PyGithub
+django-cors-headers

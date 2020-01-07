@@ -7,6 +7,9 @@ HOST = 'http://localhost:8000'
 
 SECRET_KEY = 'secret'
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = []
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
