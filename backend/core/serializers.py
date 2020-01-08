@@ -33,8 +33,4 @@ class RepositoryRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Repository
         fields = ('full_name',)
-
-    def validate_full_name(self, value):
-        if not value:
-            raise serializers.ValidationError(_('This field is required.'))
-        return value
+        extra_kwargs = {'full_name': {'required': True}}

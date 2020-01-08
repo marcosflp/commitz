@@ -1,4 +1,5 @@
 import github
+from django.utils.translation import ugettext_lazy as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -10,6 +11,7 @@ from core.serializers import HomeSerializer, RepositorySerializer, RepositoryReg
 from services.core import commit as commit_service
 from services.core import repository as repository_service
 from services.users import githubprofile as githubprofile_service
+from users.models import GitHubProfile
 
 
 class HomeViewSet(viewsets.ReadOnlyModelViewSet):
@@ -39,10 +41,14 @@ class RepositoryViewSet(viewsets.ModelViewSet):
                     githubprofile_service=githubprofile_service,
                     commit_service=commit_service
                 )
-            except github.UnknownObjectException as e:  # Repository not found
-                return Response(e.data, status=e.status)
+            except github.UnknownObjectException:
+                data = {'message': _('Repositório não encontrado.')}
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            except GitHubProfile.DoesNotExist:
+                data = {'message': _('Seu usuário não possui uma conta do GitHub associada.')}
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
             else:
                 data = {'message': _(f'Repositório "{repository}" registrado com sucesso.')}
                 return Response(data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

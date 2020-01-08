@@ -15,6 +15,12 @@ LOGGER = logging.getLogger(__name__)
 def register_new_repository(user, full_name, githubprofile_service, commit_service):
     """
     Register a new repository and all your commits from last month
+
+    Raises:
+        github.UnknownObjectException
+        GitHubProfile.DoesNotExists
+
+    Returns: (Repository) created
     """
     LOGGER.info(f'Registering a new Repository for "{full_name}"')
 

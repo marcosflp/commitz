@@ -64,7 +64,6 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'commitz.urls'
 
 LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
 
 TEMPLATES = [
@@ -107,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-BR'
 
 TIME_ZONE = 'UTC'
 
@@ -118,6 +117,9 @@ USE_L10N = True
 USE_TZ = True
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
     ]

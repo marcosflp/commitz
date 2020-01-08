@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^jsreverse/$', django_js_reverse.views.urls_js, name='js_reverse'),
 
-    url('^api/login/', include('rest_social_auth.urls_token')),
+    url('^api/auth/', include('rest_social_auth.urls_token')),
     url('^api/', include('core.urls')),
 
     # TODO: Analisar uma melhor forma de redirecionar as rotas para o Front

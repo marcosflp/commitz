@@ -1,5 +1,5 @@
 // import pages
-import 'bootstrap-includes';
+import 'semantic-ui-css/semantic.min.css';
 import '../sass/style.scss';
 
 import React from 'react';
