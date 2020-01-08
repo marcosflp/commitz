@@ -1,10 +1,16 @@
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 from core.managers import CommitManager
 
 
 class Repository(models.Model):
-    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='repositories')
+    user = models.ForeignKey(
+        'users.User',
+        on_delete=models.CASCADE,
+        related_name='repositories',
+        help_text=_('Authenticated user.')
+    )
 
     github_id = models.PositiveIntegerField(unique=True, null=True)
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='owner_repositories')
