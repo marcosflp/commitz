@@ -54,7 +54,7 @@ class GitHubProfile(models.Model):
     updated_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.name if self.name else self.login
+        return f'{self.name if self.name else self.login}'
     
     @property
     def has_github_account(self):

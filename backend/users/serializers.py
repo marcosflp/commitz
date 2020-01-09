@@ -9,10 +9,16 @@ class AuthorHomeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('pk', 'name', 'avatar_url')
+        fields = ('pk', 'name', 'avatar_url', 'email')
 
     def get_name(self, obj):
-        return obj.githubprofile.name
+        if hasattr(obj, 'githubprofile'):
+            return obj.githubprofile.name
+        else:
+            return ''
 
     def get_avatar_url(self, obj):
-        return obj.githubprofile.avatar_url
+        if hasattr(obj, 'githubprofile'):
+            return obj.githubprofile.avatar_url
+        else:
+            return ''

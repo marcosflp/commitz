@@ -1,18 +1,17 @@
-import axios from 'axios';
+import BackendService from 'services';
 
-class RepositoryService {
-  constructor() {
-    this.apiAuthToken = `Token ${localStorage.getItem('token')}`;
-
-    axios.defaults.baseURL = 'http://localhost:8000/api';
+class RepositoryService extends BackendService {
+  registerNewRepository(fullName) {
+    return this.backendApi().post('repositories/register_new_repository_by_full_name/', {
+      full_name: fullName,
+    });
   }
 
-  registerNewRepository(fullName) {
-    return axios.post(
-      'repositories/register_new_repository_by_full_name/',
-      { full_name: fullName },
-      { headers: { Authorization: this.apiAuthToken } }
-    );
+  fetchRepositories(params) {
+    if (params !== undefined) {
+      return this.backendApi().get('/repositories', { params });
+    }
+    return this.backendApi().get('/repositories');
   }
 }
 
