@@ -27,15 +27,16 @@ class CompleteGitHubAuth extends React.Component {
     this.setState({ isAuthenticating: true });
 
     AuthService.authenticateUserWithGitHub(code)
-      .then(() => {
-        return null;
+      .then((res) => {
+        localStorage.setItem('token', res.data.token);
+        return res;
       })
       .catch((error) => {
         throw new Error(error);
       })
       .finally(() => {
         self.setState({ isAuthenticating: false });
-    });
+      });
   }
 
   render() {

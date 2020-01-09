@@ -12,6 +12,7 @@ def update_or_create_githubprofile(profile_data, user=None):
     # Ensure that is a editable object and that `profile_data` is a mapping object
     profile_data = dict(profile_data)
 
+    # FIXME: Check if exists a User before create the GitHubProfile
     profile_id = profile_data.pop('id')
     profile_data['user'] = user or User.objects.get_or_create(login=profile_data['login'])[0]
     profile_data['name'] = profile_data['name'] or ''
