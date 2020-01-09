@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Icon, Label, Button, Image, Header } from 'semantic-ui-react';
+import { Menu, Icon, Label, Button, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 import RepositoryAddNew from '../RepositoryAddNew';
@@ -50,7 +50,7 @@ class SideMenu extends React.Component {
           <div className="user">
             <Label as="a" image>
               <Image src="https://react.semantic-ui.com/images/avatar/small/elliot.jpg" />
-              Marcos Felipe
+              Nome do usuário
             </Label>
           </div>
 

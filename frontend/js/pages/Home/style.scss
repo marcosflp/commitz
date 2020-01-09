@@ -1,3 +1,28 @@
-.header-page.ui.header {
-  margin-top: 2rem;
+.home {
+  .header-page.ui.header {
+    margin: 1.5rem 0 1.5rem 0;
+  }
+
+  .container-utils {
+    margin-bottom: 2.5rem;
+
+    .select-repository {
+      position: relative;
+      display: inline-block;
+
+      .dropdown {
+        width: 23rem;
+      }
+
+      .close-icon {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        right: 2.5em;
+        line-height: 1;
+        z-index: 1;
+      }
+    }
+  }
 }

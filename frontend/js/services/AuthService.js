@@ -1,18 +1,14 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+import { OAuthGitHubUrl } from '../constants';
 
 class AuthService {
-  constructor() {
-    this.urlGitHub = 'http://localhost:8000/api/auth/social/token/';
-  }
-
   authenticateUserWithGitHub(code) {
     return axios
-      .post(this.urlGitHub, { provider: 'github', code })
+      .post(OAuthGitHubUrl, { provider: 'github', code })
       .then((res) => {
-        localStorage.setItem('token', res.data.token);
-        return null;
+        return res;
       })
       .catch((error) => {
         throw new Error(error);

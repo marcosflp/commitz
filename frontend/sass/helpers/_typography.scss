@@ -1,0 +1,10 @@
+.fake-link {
+  color: #4183c4;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:focus {
+    outline: 0;
+    text-decoration: underline;
+  }
+}
