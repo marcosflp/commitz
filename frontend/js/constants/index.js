@@ -1,4 +1,4 @@
-const BackEndApiURL = 'http://localhost:8000/api';
-const OAuthGitHubUrl = 'http://localhost:8000/api/auth/social/token/';
+const BackEndApiURL = 'https://commitz.herokuapp.com/api';
+const OAuthGitHubUrl = 'https://commitz.herokuapp.com/api/auth/social/token/';
 
 export { BackEndApiURL, OAuthGitHubUrl };
