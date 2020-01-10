@@ -24,6 +24,22 @@
     "SECRET_KEY": {
       "description": "Django SECRET_KEY setting",
       "generator": "secret"
+    },
+    "SOCIAL_AUTH_GITHUB_KEY": {
+      "description": "GitHub auth app key",
+      "generator": "secret"
+    },
+    "SOCIAL_AUTH_GITHUB_SECRET": {
+      "description": "GitHub SECRET_KEY",
+      "generator": "secret"
+    },
+    "REST_SOCIAL_OAUTH_ABSOLUTE_REDIRECT_URI": {
+      "description": "URL to github redirect to on authentication",
+      "generator": ""
+    },
+    "CORS_ORIGIN_WHITELIST": {
+      "description": "Django SECRET_KEY setting",
+      "generator": "commitz.herokuapp.com"
     }
   },
   "formation": {
