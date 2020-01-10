@@ -15,19 +15,23 @@ from users.models import GitHubProfile
 
 
 class HomeViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Commit.objects.commits_for_list()
     serializer_class = HomeSerializer
     filter_backends = (SearchFilter, DjangoFilterBackend)
     filter_fields = ('repository', 'author')
     search_fields = ('^repository__full_name', 'repository__description', 'message')
 
+    def get_queryset(self):
+        return Commit.objects.commits_for_list(self.request.user)
+
 
 class RepositoryViewSet(viewsets.ModelViewSet):
-    queryset = Repository.objects.all()
     serializer_class = RepositorySerializer
     filter_backends = (SearchFilter, DjangoFilterBackend)
     filter_fields = ('owner',)
     search_fields = ('^full_name', '^name', 'description')
+
+    def get_queryset(self):
+        return Repository.objects.filter(user=self.request.user)
 
     @action(methods=['post'], detail=False)
     def register_new_repository_by_full_name(self, request):
