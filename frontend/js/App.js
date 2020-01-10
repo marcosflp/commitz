@@ -1,12 +1,12 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
 
-import Home from './pages/Home';
+import Root from './pages/Root';
 import SentryBoundary from './utils/SentryBoundary';
 
 const App = () => (
   <SentryBoundary>
-    <Home />
+    <Root />
   </SentryBoundary>
 );
 

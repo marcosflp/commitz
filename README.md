@@ -8,6 +8,8 @@ CommitZ
   `cp commitz/settings/local.py.example commitz/settings/local.py`
 - Create a copy of ``.env.example``:
   `cp .env.example .env`
+- Inside the `.env` file add your GitHub APP Client ID in `SOCIAL_AUTH_GITHUB_KEY`
+- Inside the `.env` file add your GitHub Client Secret in `SOCIAL_AUTH_GITHUB_SECRET`
 
 #### If you are using plain python:
 - Create the migrations for `users` app: 
