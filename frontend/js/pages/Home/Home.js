@@ -18,7 +18,7 @@ class Home extends React.Component {
       dataTableList: [],
       repositoryDropdownOptions: [],
       repositoryDropdownValue: null,
-      filteredRepositoryID: null,
+      repositoryFilteredID: null,
     };
 
     this.updateDataTableList = this.updateDataTableList.bind(this);
@@ -35,21 +35,21 @@ class Home extends React.Component {
   handleRepositoryFilter(e) {
     const value = parseInt(e.target.id, 10);
     this.setState(
-      { filteredRepositoryID: value, repositoryDropdownValue: value },
+      { repositoryFilteredID: value, repositoryDropdownValue: value },
       this.updateDataTableList
     );
   }
 
   handleRepositoryDropDownValueChange(e, object) {
     this.setState(
-      { filteredRepositoryID: object.value, repositoryDropdownValue: object.value },
+      { repositoryFilteredID: object.value, repositoryDropdownValue: object.value },
       this.updateDataTableList
     );
   }
 
   handleRepositoryDropDownValueClear() {
     this.setState(
-      { repositoryDropdownValue: null, filteredRepositoryID: null },
+      { repositoryDropdownValue: null, repositoryFilteredID: null },
       this.updateDataTableList
     );
   }
@@ -66,11 +66,11 @@ class Home extends React.Component {
   }
 
   updateDataTableList() {
-    const { filteredRepositoryID } = this.state;
+    const { repositoryFilteredID } = this.state;
     let query = null;
 
-    if (filteredRepositoryID !== null) {
-      query = { repository: filteredRepositoryID };
+    if (repositoryFilteredID !== null) {
+      query = { repository: repositoryFilteredID };
     }
 
     HomeService.fetchDataTable(query)

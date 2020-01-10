@@ -11,6 +11,7 @@ class RepositoryAddNew extends React.Component {
 
     this.state = {
       fullName: '',
+      showLoading: false,
     };
 
     this.handleFullNameChange = this.handleFullNameChange.bind(this);
@@ -20,12 +21,17 @@ class RepositoryAddNew extends React.Component {
   handleFormSubmit(event) {
     const { fullName } = this.state;
 
+    this.setState({ showLoading: true });
+
     RepositoryService.registerNewRepository(fullName)
       .then((res) => {
         alert(res.data.message);
-        return null;
+        this.setState({ showLoading: false });
+        return res;
       })
       .catch((error) => {
+        this.setState({ showLoading: false });
+
         if (error.response.status === 400) {
           alert(error.response.data.full_name || error.response.data.message);
         } else {
@@ -41,6 +47,23 @@ class RepositoryAddNew extends React.Component {
   }
 
   render() {
+    const { showLoading } = this.state;
+
+    if (showLoading) {
+      return (
+        <Form className="repository-form" onSubmit={this.handleFormSubmit}>
+          <Input
+            disabled
+            fluid
+            icon="search"
+            loading
+            placeholder="Add new repository..."
+            onChange={this.handleFullNameChange}
+          />
+        </Form>
+      );
+    }
+
     return (
       <Form className="repository-form" onSubmit={this.handleFormSubmit}>
         <Input
