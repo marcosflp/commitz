@@ -1,8 +1,10 @@
 import React from 'react';
 import { Grid, Header, Dropdown, Icon } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
 
 import SideMenu from 'components/SideMenu';
 
+import AuthService from '../../services/AuthService';
 import HomeService from '../../services/HomeService';
 import RepositoryService from '../../services/RepositoryService';
 
@@ -28,6 +30,10 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
+    if (!AuthService.isUserAuthenticated()) {
+      return null;
+    }
+
     this.updateDataTableList();
     this.getRepositoryDropdownOptions();
   }
@@ -85,6 +91,9 @@ class Home extends React.Component {
 
   render() {
     const { repositoryDropdownOptions, dataTableList, repositoryDropdownValue } = this.state;
+    if (!AuthService.isUserAuthenticated()) {
+      return <Redirect to="/login" />;
+    }
 
     return (
       <Grid className="home" relaxed="very">

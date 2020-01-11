@@ -52,7 +52,7 @@ class RepositoryViewSet(viewsets.ModelViewSet):
                 data = {'message': _('Seu usuário não possui uma conta do GitHub associada.')}
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
             else:
-                data = {'message': _(f'Repositório "{repository}" registrado com sucesso.')}
+                data = {'message': _(f'Repositório "{repository}" registrado com sucesso. Atualize a página para visualizá-los')}
                 return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

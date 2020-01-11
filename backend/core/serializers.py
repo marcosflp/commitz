@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.utils.translation import ugettext_lazy as _
 
 from core.models import Commit, Repository
 from users.serializers import AuthorHomeSerializer

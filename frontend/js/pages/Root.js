@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Logout from 'components/Logout';
 
 import ExternalRedirect from '../utils';
+import { GitHubAuthorizationURL } from '../constants';
 
 import Home from './Home';
 import CompleteGitHubAuth from './CompleteGitHubAuth';
@@ -21,7 +22,7 @@ const Root = () => {
               <CompleteGitHubAuth />
             </Route>
             <Route path="/login/with_github">
-              <ExternalRedirect to="https://github.com/login/oauth/authorize?client_id=c5b2afe1322f2e960fe1" />
+              <ExternalRedirect to={GitHubAuthorizationURL} />
             </Route>
 
             <Route exact path="/login">
