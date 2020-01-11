@@ -14,7 +14,7 @@ def update_or_create_githubprofile(profile_data, user=None):
 
     # FIXME: Check if exists a User before create the GitHubProfile
     profile_id = profile_data.pop('id')
-    profile_data['user'] = user or User.objects.get_or_create(login=profile_data['login'])[0]
+    profile_data['user'] = user or User.objects.get_or_create(username=profile_data['login'])[0]
     profile_data['name'] = profile_data['name'] or ''
 
     profile, profile_created = GitHubProfile.objects.update_or_create(

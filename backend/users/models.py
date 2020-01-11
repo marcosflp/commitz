@@ -8,8 +8,8 @@ from .managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
-    login = models.CharField(max_length=100, unique=True, null=True)
-    email = models.EmailField(max_length=255, unique=True, null=True)
+    username = models.CharField(max_length=100, unique=True)
+    email = models.EmailField(max_length=255, blank=True, default='')
 
     is_staff = models.BooleanField(
         default=False,
@@ -22,7 +22,8 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    # The USERNAME_FIELD must be `username` Python Social Auth require that field on user authentication/creation
+    USERNAME_FIELD = 'username'
 
     def get_full_name(self):
         return self.email
@@ -31,7 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
         return self.email
 
     def __str__(self):
-        return self.login or self.email
+        return self.username or self.email
 
 
 class GitHubProfile(models.Model):
