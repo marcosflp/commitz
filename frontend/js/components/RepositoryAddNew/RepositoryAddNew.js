@@ -52,26 +52,31 @@ class RepositoryAddNew extends React.Component {
     if (showLoading) {
       return (
         <Form className="repository-form" onSubmit={this.handleFormSubmit}>
-          <Input
-            disabled
-            fluid
-            icon="search"
-            loading
-            placeholder="Add new repository..."
-            onChange={this.handleFullNameChange}
-          />
+          <Form.Field>
+            <Input
+              action="+ Add repo"
+              disabled
+              fluid
+              iconPosition="left"
+              loading
+              placeholder="Ex: django/django"
+              onChange={this.handleFullNameChange}
+            />
+          </Form.Field>
         </Form>
       );
     }
 
     return (
       <Form className="repository-form" onSubmit={this.handleFormSubmit}>
-        <Input
-          fluid
-          icon="search"
-          placeholder="Add new repository..."
-          onChange={this.handleFullNameChange}
-        />
+        <Form.Field>
+          <Input
+            action="+ Add repo"
+            fluid
+            placeholder="Ex: django/django"
+            onChange={this.handleFullNameChange}
+          />
+        </Form.Field>
       </Form>
     );
   }
