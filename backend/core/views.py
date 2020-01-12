@@ -8,9 +8,9 @@ from rest_framework.response import Response
 
 from core.models import Commit, Repository
 from core.serializers import HomeSerializer, RepositorySerializer, RepositoryRegistrationSerializer
-from services.core import commit as commit_service
-from services.core import repository as repository_service
-from services.users import githubprofile as githubprofile_service
+from services.core import CommitService
+from services.core import RepositoryService
+from services.users import GitHubProfileService
 from users.models import GitHubProfile
 
 
@@ -39,11 +39,11 @@ class RepositoryViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             try:
-                repository = repository_service.add_new_repository(
+                repository = RepositoryService.add_new_repository(
                     user=request.user,
                     full_name=serializer.data['full_name'],
-                    githubprofile_service=githubprofile_service,
-                    commit_service=commit_service
+                    githubprofile_service=GitHubProfileService,
+                    commit_service=CommitService
                 )
             except github.UnknownObjectException:
                 data = {'message': _('Repositório não encontrado.')}

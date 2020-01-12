@@ -1,4 +1,4 @@
-from services.users import githubprofile as githubprofile_service
+from services.users import GitHubProfileService
 
 
 def pipeline_create_github_profile(backend, response, user, *args, **kwargs):
@@ -13,6 +13,6 @@ def pipeline_create_github_profile(backend, response, user, *args, **kwargs):
     for field_name in fields:
         githubprofile_defaults[field_name] = response[field_name]
 
-    githubprofile_service.update_or_create_githubprofile(githubprofile_defaults, user)
+    GitHubProfileService.update_or_create_githubprofile(githubprofile_defaults, user)
 
     return None

@@ -30,7 +30,7 @@ def update_repository_commits(
         until=until
     )
     if repository_commits.totalCount == 0:
-        # No commits registered in the last month.
+        # No commits found
         return 0
 
     commits = []
@@ -70,7 +70,7 @@ def update_repository_commits(
 
 
 def get_commit_author(github_commit):
-    from services.users.githubprofile import update_or_create_githubprofile
+    from services.users.GitHubProfileService import update_or_create_githubprofile
 
     if github_commit.author:
         data = {

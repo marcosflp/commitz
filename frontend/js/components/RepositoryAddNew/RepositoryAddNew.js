@@ -54,7 +54,7 @@ class RepositoryAddNew extends React.Component {
         <Form className="repository-form" onSubmit={this.handleFormSubmit}>
           <Form.Field>
             <Input
-              action="+ Add repo"
+              action="Add repo"
               disabled
               fluid
               iconPosition="left"
@@ -71,7 +71,7 @@ class RepositoryAddNew extends React.Component {
       <Form className="repository-form" onSubmit={this.handleFormSubmit}>
         <Form.Field>
           <Input
-            action="+ Add repo"
+            action="Add repo"
             fluid
             placeholder="Ex: django/django"
             onChange={this.handleFullNameChange}
