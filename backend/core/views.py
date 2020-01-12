@@ -34,12 +34,12 @@ class RepositoryViewSet(viewsets.ModelViewSet):
         return Repository.objects.filter(user=self.request.user)
 
     @action(methods=['post'], detail=False)
-    def register_new_repository_by_full_name(self, request):
+    def add_new_repository_by_full_name(self, request):
         serializer = RepositoryRegistrationSerializer(data=request.data)
 
         if serializer.is_valid():
             try:
-                repository = repository_service.register_new_repository(
+                repository = repository_service.add_new_repository(
                     user=request.user,
                     full_name=serializer.data['full_name'],
                     githubprofile_service=githubprofile_service,

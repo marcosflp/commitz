@@ -12,11 +12,11 @@ class Repository(models.Model):
         help_text=_('Authenticated user.')
     )
 
-    github_id = models.PositiveIntegerField(unique=True, null=True)
+    github_id = models.PositiveIntegerField(null=True)
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='owner_repositories')
 
     name = models.CharField(max_length=100)
-    full_name = models.CharField(max_length=100, unique=True, null=True)
+    full_name = models.CharField(max_length=100)
     description = models.CharField(max_length=255, blank=True, default='')
     language = models.CharField(max_length=64, blank=True, default='')
     stargazers_count = models.PositiveIntegerField(null=True, blank=True)
@@ -31,14 +31,14 @@ class Repository(models.Model):
     updated_at = models.DateTimeField()
 
     class Meta:
-        unique_together = ('user', 'github_id')
+        unique_together = ('user', 'full_name')
 
     def __str__(self):
         return self.full_name if self.full_name else self.name
 
 
 class Commit(models.Model):
-    sha = models.CharField(max_length=64, unique=True)
+    sha = models.CharField(max_length=64)
 
     repository = models.ForeignKey('core.Repository', on_delete=models.CASCADE)
     message = models.TextField(blank=True, default='')
@@ -47,6 +47,9 @@ class Commit(models.Model):
     authored_date = models.DateTimeField()
 
     objects = CommitManager()
+
+    class Meta:
+        unique_together = ('sha', 'repository')
 
     def __str__(self):
         return f'{self.sha}'

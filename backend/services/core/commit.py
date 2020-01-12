@@ -46,7 +46,7 @@ def update_repository_commits(
 
     # Remove commits that is already registered
     commits_sha = [github_commit.commit.sha for github_commit in commits]
-    registered_commits = Commit.objects.filter(sha__in=commits_sha)
+    registered_commits = Commit.objects.filter(sha__in=commits_sha, repository=repository)
     for registered_commit in registered_commits:
         for index, github_commit in enumerate(commits):
             if registered_commit.sha == github_commit.commit.sha:

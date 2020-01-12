@@ -12,7 +12,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 @transaction.atomic
-def register_new_repository(user, full_name, githubprofile_service, commit_service):
+def add_new_repository(user, full_name, githubprofile_service, commit_service):
     """
     Register a new repository and all your commits from last month
 

@@ -2,7 +2,7 @@ import BackendService from 'services';
 
 class RepositoryService extends BackendService {
   registerNewRepository(fullName) {
-    return this.backendApi().post('repositories/register_new_repository_by_full_name/', {
+    return this.backendApi().post('repositories/add_new_repository_by_full_name/', {
       full_name: fullName,
     });
   }
