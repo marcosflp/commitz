@@ -46,7 +46,7 @@ class RepositoryViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             try:
-                repository = RepositoryService.add_new_repository(
+                repository = RepositoryService.add_and_monitor_new_repository(
                     user=request.user,
                     full_name=serializer.data['full_name'],
                     githubprofile_service=GitHubProfileService,
