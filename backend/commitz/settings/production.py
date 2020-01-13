@@ -9,6 +9,8 @@ from .base import *  # noqa
 
 DEBUG = False
 
+HOST = config('BACKEND_HOST')
+
 SECRET_KEY = config('SECRET_KEY')
 
 DATABASES = {

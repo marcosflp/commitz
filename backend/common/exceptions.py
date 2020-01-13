@@ -1,0 +1,2 @@
+class RepositoryNotBelongToUserException(Exception):
+    pass

@@ -40,6 +40,14 @@
     "CORS_ORIGIN_WHITELIST": {
       "description": "Django SECRET_KEY setting",
       "generator": "commitz.herokuapp.com"
+    },
+    "GITHUB_WEBHOOK_SECRET_KEY": {
+      "description": "GitHub webhooks setting",
+      "generator": "secret"
+    },
+    "BACKEND_HOST": {
+      "description": "Backend Host",
+      "generator": "https://commitz.herokuapp.com"
     }
   },
   "formation": {

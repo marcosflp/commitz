@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.utils.timezone import make_aware
 from github import Github
 
+from common.exceptions import RepositoryNotBelongToUserException
 from core.models import Repository
 
 LOGGER = logging.getLogger(__name__)
@@ -19,6 +20,7 @@ def add_new_repository(user, full_name, githubprofile_service, commit_service):
     Raises:
         github.UnknownObjectException
         GitHubProfile.DoesNotExists
+        RepositoryNotBelongToUserException
 
     Returns: (Repository) created
     """
@@ -27,6 +29,9 @@ def add_new_repository(user, full_name, githubprofile_service, commit_service):
     github_api = Github(user.githubprofile.access_token)
     git_repository = github_api.get_repo(full_name)
     owner = get_repository_owner(user, full_name, githubprofile_service)
+
+    if owner != user:
+        raise RepositoryNotBelongToUserException
 
     repository = Repository.objects.create(
         user=user,

@@ -14,9 +14,9 @@ const getBackendGitHubCompleteLoginUri = () => {
 
 const getGitHubLoginUri = () => {
   if (process.env.NODE_ENV === 'production') {
-    return 'https://github.com/login/oauth/authorize?client_id=c5b2afe1322f2e960fe1';
+    return 'https://github.com/login/oauth/authorize?client_id=c5b2afe1322f2e960fe1&scope=admin:repo_hook';
   }
-  return 'https://github.com/login/oauth/authorize?client_id=23fa8aeafa95dcc7e4b0';
+  return 'https://github.com/login/oauth/authorize?client_id=23fa8aeafa95dcc7e4b0&scope=admin:repo_hook';
 };
 
 const BackEndApiURL = getBackendApiUri();
