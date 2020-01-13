@@ -1,11 +1,18 @@
+import datetime
+
 import github
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from common.exceptions import RepositoryNotBelongToUserException
+from common.mixins import ValidateWebHookSignatureMixin
 from core.models import Commit, Repository
 from core.serializers import HomeSerializer, RepositorySerializer, RepositoryRegistrationSerializer
 from services.core import CommitService
@@ -51,8 +58,42 @@ class RepositoryViewSet(viewsets.ModelViewSet):
             except GitHubProfile.DoesNotExist:
                 data = {'message': _('Seu usuário não possui uma conta do GitHub associada.')}
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            except RepositoryNotBelongToUserException:
+                data = {'message': _('Esse repositório não pertence a seu usuário.')}
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
             else:
                 data = {'message': _(f'Repositório "{repository}" registrado com sucesso. Atualize a página para visualizá-los')}
                 return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RepositoryWebhookView(ValidateWebHookSignatureMixin, APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        event = request.META.get('HTTP_X_GITHUB_EVENT', 'ping')
+        if event == 'ping':
+            return Response({'message': 'ok'}, status=status.HTTP_202_ACCEPTED)
+
+        data = request.data
+        repository_id = data['repository']['id']
+        owner_id = data['repository']['owner']['id']
+
+        try:
+            repository = Repository.objects.get(github_id=repository_id)
+        except Repository.DoesNotExist:
+            return Response({'message': 'Repository not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            owner = GitHubProfile.objects.select_related('user').get(github_id=owner_id)
+        except GitHubProfile.DoesNotExist:
+            return Response({'message': 'Repository owner not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        CommitService.update_repository_commits(
+            user=owner.user,
+            repository=repository,
+            since=timezone.now() - datetime.timedelta(days=1)
+        )
+
+        return Response({'message': 'ok'}, status=status.HTTP_200_OK)

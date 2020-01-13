@@ -2,12 +2,12 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
-import { GitHubOAuthURL } from '../constants';
+import { BackendGitHubCompleteLoginUri } from '../constants';
 
 class AuthService {
   authenticateUserWithGitHub(code) {
     return axios
-      .post(GitHubOAuthURL, { provider: 'github', code })
+      .post(BackendGitHubCompleteLoginUri, { provider: 'github', code })
       .then((res) => {
         return res;
       })
