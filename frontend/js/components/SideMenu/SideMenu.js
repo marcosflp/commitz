@@ -47,10 +47,10 @@ class SideMenu extends React.Component {
         </Menu.Item>
 
         <Menu.Item
-          active={activeItem === 'repository'}
+          active={activeItem === 'repositories'}
           as={Link}
-          name="repository"
-          to="/repositories/8/"
+          name="repositories"
+          to="/repositories"
           onClick={this.handleMenuItemClick}
         >
           Repositórios

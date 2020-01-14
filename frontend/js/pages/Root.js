@@ -10,6 +10,7 @@ import Home from './Home';
 import RepositoryDetail from './Repository';
 import CompleteGitHubAuth from './CompleteGitHubAuth';
 import Login from './Login';
+import RepositoryList from './Repository/RepositoryList';
 
 const Root = () => {
   return (
@@ -35,6 +36,10 @@ const Root = () => {
 
             <Route exact path="/">
               <Home />
+            </Route>
+
+            <Route exact path="/repositories">
+              <RepositoryList />
             </Route>
 
             <Route exact path="/repositories/:repositoryId">
