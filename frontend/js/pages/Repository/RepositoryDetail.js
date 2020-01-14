@@ -59,36 +59,28 @@ class RepositoryDetail extends React.Component {
     const { repository, commits } = this.state;
 
     return (
-      <Grid className="home" relaxed="very">
-        <Grid.Column width={4}>
-          <SideMenu />
-        </Grid.Column>
+      <Grid>
+        <Grid.Column>
+          <Header as="h1" className="header-page">
+            {repository.full_name}
+            <Header.Subheader>{repository.description}</Header.Subheader>
+          </Header>
 
-        <Grid.Column className="clear-left-padding" width={12}>
-          <Grid centered>
-            <Grid.Column width={15}>
-              <Header as="h1" className="header-page">
-                {repository.full_name}
-                <Header.Subheader>{repository.description}</Header.Subheader>
-              </Header>
+          <Grid.Row className="container-utils">
+            <Label>
+              <Icon name="flag" /> {repository.language}
+            </Label>
+            <Label>
+              <Icon name="star" /> {repository.stargazers_count}
+            </Label>
+            <Label>
+              <Icon name="copy" /> {repository.clone_url}
+            </Label>
+          </Grid.Row>
 
-              <Grid.Row className="container-utils">
-                <Label>
-                  <Icon name="flag" /> {repository.language}
-                </Label>
-                <Label>
-                  <Icon name="star" /> {repository.stargazers_count}
-                </Label>
-                <Label>
-                  <Icon name="copy" /> {repository.clone_url}
-                </Label>
-              </Grid.Row>
-
-              <Grid.Row>
-                <DataTable dataTableList={commits} />
-              </Grid.Row>
-            </Grid.Column>
-          </Grid>
+          <Grid.Row>
+            <DataTable dataTableList={commits} />
+          </Grid.Row>
         </Grid.Column>
       </Grid>
     );

@@ -2,8 +2,6 @@ import React from 'react';
 import { Grid, Header, Dropdown, Icon, Pagination } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 
-import SideMenu from 'components/SideMenu';
-
 import AuthService from '../../services/AuthService';
 import HomeService from '../../services/HomeService';
 import RepositoryService from '../../services/RepositoryService';
@@ -111,53 +109,45 @@ class Home extends React.Component {
     } = this.state;
 
     return (
-      <Grid className="home" relaxed="very">
-        <Grid.Column width={4}>
-          <SideMenu />
-        </Grid.Column>
+      <Grid>
+        <Grid.Column>
+          <Header as="h1" className="header-page" dividing>
+            Commits
+          </Header>
 
-        <Grid.Column className="clear-left-padding" width={12}>
-          <Grid centered>
-            <Grid.Column width={15}>
-              <Header as="h1" className="header-page" dividing>
-                Commits
-              </Header>
+          <Grid.Row className="container-utils">
+            <div className="select-repository">
+              <Dropdown
+                options={repositoryDropdownOptions}
+                placeholder="Repositórios"
+                search
+                selection
+                value={repositoryDropdownValue}
+                onChange={this.handleRepositoryDropDownValueChange}
+              />
+              <Icon
+                className="close-icon"
+                link
+                name="close"
+                size="small"
+                onClick={this.handleRepositoryDropDownValueClear}
+              />
+            </div>
+          </Grid.Row>
 
-              <Grid.Row className="container-utils">
-                <div className="select-repository">
-                  <Dropdown
-                    options={repositoryDropdownOptions}
-                    placeholder="Repositórios"
-                    search
-                    selection
-                    value={repositoryDropdownValue}
-                    onChange={this.handleRepositoryDropDownValueChange}
-                  />
-                  <Icon
-                    className="close-icon"
-                    link
-                    name="close"
-                    size="small"
-                    onClick={this.handleRepositoryDropDownValueClear}
-                  />
-                </div>
-              </Grid.Row>
+          <Grid.Row>
+            <DataTable dataTableList={dataTableList} />
+          </Grid.Row>
 
-              <Grid.Row>
-                <DataTable dataTableList={dataTableList} />
-              </Grid.Row>
-
-              <Grid.Row className="pagination">
-                <Pagination
-                  activePage={activePage}
-                  nextItem={false}
-                  prevItem={false}
-                  totalPages={totalPages}
-                  onPageChange={this.handlePaginationChange}
-                />
-              </Grid.Row>
-            </Grid.Column>
-          </Grid>
+          <Grid.Row className="pagination">
+            <Pagination
+              activePage={activePage}
+              nextItem={false}
+              prevItem={false}
+              totalPages={totalPages}
+              onPageChange={this.handlePaginationChange}
+            />
+          </Grid.Row>
         </Grid.Column>
       </Grid>
     );

@@ -1,54 +1,34 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { Grid } from 'semantic-ui-react';
 
-import Logout from 'components/Logout';
-
-import ExternalRedirect from '../utils';
-import { GitHubLoginUri } from '../constants';
+import SideMenu from '../components/SideMenu';
 
 import Home from './Home';
-import RepositoryDetail from './Repository';
-import CompleteGitHubAuth from './CompleteGitHubAuth';
-import Login from './Login';
 import RepositoryList from './Repository/RepositoryList';
+import RepositoryDetail from './Repository';
 
 const Root = () => {
   return (
-    <>
-      <Router>
-        <Link to="/login/complete_github_auth" />
+    <Grid className="home" relaxed="very">
+      <Grid.Column width={4}>
+        <SideMenu />
+      </Grid.Column>
 
-        <Switch>
-          <div className="ui container-fluid">
-            <Route path="/login/complete_github_auth">
-              <CompleteGitHubAuth />
-            </Route>
-            <Route path="/login/with_github">
-              <ExternalRedirect to={GitHubLoginUri} />
-            </Route>
+      <Grid.Column className="main-container" width={12}>
+        <Route exact path="/">
+          <Home />
+        </Route>
 
-            <Route exact path="/login">
-              <Login />
-            </Route>
-            <Route exact path="/logout">
-              <Logout />
-            </Route>
+        <Route exact path="/repositories">
+          <RepositoryList />
+        </Route>
 
-            <Route exact path="/">
-              <Home />
-            </Route>
-
-            <Route exact path="/repositories">
-              <RepositoryList />
-            </Route>
-
-            <Route exact path="/repositories/:repositoryId">
-              <RepositoryDetail />
-            </Route>
-          </div>
-        </Switch>
-      </Router>
-    </>
+        <Route exact path="/repositories/:repositoryId">
+          <RepositoryDetail />
+        </Route>
+      </Grid.Column>
+    </Grid>
   );
 };
 

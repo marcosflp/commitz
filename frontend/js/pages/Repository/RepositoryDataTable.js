@@ -32,7 +32,7 @@ class RepositoryDataTable extends React.Component {
             <Table.HeaderCell>Nome</Table.HeaderCell>
             <Table.HeaderCell>Descrição</Table.HeaderCell>
             <Table.HeaderCell>Linguagem</Table.HeaderCell>
-            <Table.HeaderCell>Estrelas</Table.HeaderCell>
+            <Table.HeaderCell>Qtd estrelas</Table.HeaderCell>
             <Table.HeaderCell>Desativado</Table.HeaderCell>
             <Table.HeaderCell>Clonar</Table.HeaderCell>
             <Table.HeaderCell>Criado em</Table.HeaderCell>
