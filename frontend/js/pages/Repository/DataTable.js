@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Header, Table, Image } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 
 class DataTable extends React.Component {
   renderTableRows() {
@@ -19,9 +18,7 @@ class DataTable extends React.Component {
             </Header>
           </Table.Cell>
           <Table.Cell width={8}>{data.message}</Table.Cell>
-          <Table.Cell>
-            <Link to={`repositories/${data.repository.pk}/`}>{data.repository.full_name}</Link>
-          </Table.Cell>
+          <Table.Cell>{data.sha.slice(0, 7)}</Table.Cell>
           <Table.Cell>{new Date(data.authored_date).toLocaleDateString()}</Table.Cell>
         </Table.Row>
       );
@@ -30,13 +27,10 @@ class DataTable extends React.Component {
 
   render() {
     return (
-      <Table basic="very" celled>
+      <Table>
         <Table.Header fullWidth>
           <Table.Row>
-            <Table.HeaderCell>Autor</Table.HeaderCell>
-            <Table.HeaderCell>Mensagem</Table.HeaderCell>
-            <Table.HeaderCell>Repositório</Table.HeaderCell>
-            <Table.HeaderCell>Data</Table.HeaderCell>
+            <Table.HeaderCell colSpan="4">Commits</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 

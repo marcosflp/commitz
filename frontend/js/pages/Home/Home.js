@@ -1,8 +1,6 @@
 import React from 'react';
-import { Grid, Header, Dropdown, Icon } from 'semantic-ui-react';
+import { Grid, Header, Dropdown, Icon, Pagination } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
-
-import SideMenu from 'components/SideMenu';
 
 import AuthService from '../../services/AuthService';
 import HomeService from '../../services/HomeService';
@@ -17,12 +15,15 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
+      activePage: 1,
+      totalPages: 1,
       dataTableList: [],
       repositoryDropdownOptions: [],
       repositoryDropdownValue: null,
       repositoryFilteredID: null,
     };
 
+    this.handlePaginationChange = this.handlePaginationChange.bind(this);
     this.updateDataTableList = this.updateDataTableList.bind(this);
     this.handleRepositoryFilter = this.handleRepositoryFilter.bind(this);
     this.handleRepositoryDropDownValueChange = this.handleRepositoryDropDownValueChange.bind(this);
@@ -36,6 +37,11 @@ class Home extends React.Component {
 
     this.updateDataTableList();
     this.getRepositoryDropdownOptions();
+  }
+
+  handlePaginationChange(e, value) {
+    this.setState({ activePage: value.activePage }, this.updateDataTableList);
+    window.scrollTo(0, 0);
   }
 
   handleRepositoryFilter(e) {
@@ -62,7 +68,7 @@ class Home extends React.Component {
 
   getRepositoryDropdownOptions() {
     RepositoryService.fetchRepositories().then((res) => {
-      const options = res.data.map((repo) => {
+      const options = res.data.results.map((repo) => {
         return { key: repo.pk, value: repo.pk, text: repo.full_name };
       });
 
@@ -72,16 +78,16 @@ class Home extends React.Component {
   }
 
   updateDataTableList() {
-    const { repositoryFilteredID } = this.state;
-    let query = null;
+    const { activePage, repositoryFilteredID } = this.state;
+    const query = { page: activePage };
 
     if (repositoryFilteredID !== null) {
-      query = { repository: repositoryFilteredID };
+      query.repository = repositoryFilteredID;
     }
 
     HomeService.fetchDataTable(query)
       .then((res) => {
-        this.setState({ dataTableList: res.data });
+        this.setState({ dataTableList: res.data.results, totalPages: res.data.total_pages });
         return res;
       })
       .catch((error) => {
@@ -90,52 +96,58 @@ class Home extends React.Component {
   }
 
   render() {
-    const { repositoryDropdownOptions, dataTableList, repositoryDropdownValue } = this.state;
     if (!AuthService.isUserAuthenticated()) {
       return <Redirect to="/login" />;
     }
 
+    const {
+      activePage,
+      totalPages,
+      repositoryDropdownOptions,
+      dataTableList,
+      repositoryDropdownValue,
+    } = this.state;
+
     return (
-      <Grid className="home" relaxed="very">
-        <Grid.Column width={4}>
-          <SideMenu />
-        </Grid.Column>
+      <Grid>
+        <Grid.Column>
+          <Header as="h1" className="header-page" dividing>
+            Commits
+          </Header>
 
-        <Grid.Column className="clear-left-padding" width={12}>
-          <Grid centered>
-            <Grid.Column width={15}>
-              <Header as="h1" className="header-page" dividing>
-                Commits
-              </Header>
+          <Grid.Row className="container-utils">
+            <div className="select-repository">
+              <Dropdown
+                options={repositoryDropdownOptions}
+                placeholder="Repositórios"
+                search
+                selection
+                value={repositoryDropdownValue}
+                onChange={this.handleRepositoryDropDownValueChange}
+              />
+              <Icon
+                className="close-icon"
+                link
+                name="close"
+                size="small"
+                onClick={this.handleRepositoryDropDownValueClear}
+              />
+            </div>
+          </Grid.Row>
 
-              <Grid.Row className="container-utils">
-                <div className="select-repository">
-                  <Dropdown
-                    options={repositoryDropdownOptions}
-                    placeholder="Repositórios"
-                    search
-                    selection
-                    value={repositoryDropdownValue}
-                    onChange={this.handleRepositoryDropDownValueChange}
-                  />
-                  <Icon
-                    className="close-icon"
-                    link
-                    name="close"
-                    size="small"
-                    onClick={this.handleRepositoryDropDownValueClear}
-                  />
-                </div>
-              </Grid.Row>
+          <Grid.Row>
+            <DataTable dataTableList={dataTableList} />
+          </Grid.Row>
 
-              <Grid.Row>
-                <DataTable
-                  dataTableList={dataTableList}
-                  onRepositoryNameClick={this.handleRepositoryFilter}
-                />
-              </Grid.Row>
-            </Grid.Column>
-          </Grid>
+          <Grid.Row className="pagination">
+            <Pagination
+              activePage={activePage}
+              nextItem={false}
+              prevItem={false}
+              totalPages={totalPages}
+              onPageChange={this.handlePaginationChange}
+            />
+          </Grid.Row>
         </Grid.Column>
       </Grid>
     );

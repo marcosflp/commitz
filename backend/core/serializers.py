@@ -33,3 +33,11 @@ class RepositoryRegistrationSerializer(serializers.ModelSerializer):
         model = Repository
         fields = ('full_name',)
         extra_kwargs = {'full_name': {'required': True}}
+
+
+class CommitSerializer(serializers.ModelSerializer):
+    author = AuthorHomeSerializer(read_only=True)
+
+    class Meta:
+        model = Commit
+        fields = ('sha', 'repository', 'message', 'author', 'authored_date')
