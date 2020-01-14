@@ -43,7 +43,7 @@ class RepositoryDetail extends React.Component {
   getRepositoryCommits(repositoryId) {
     CommitService.fetchCommits({ repository: repositoryId })
       .then((res) => {
-        this.setState({ commits: res.data });
+        this.setState({ commits: res.data.results });
         return res;
       })
       .catch((error) => {
@@ -68,7 +68,7 @@ class RepositoryDetail extends React.Component {
           <Grid centered>
             <Grid.Column width={15}>
               <Header as="h1" className="header-page">
-                Repositório: {repository.name}
+                {repository.full_name}
                 <Header.Subheader>{repository.description}</Header.Subheader>
               </Header>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Header } from 'semantic-ui-react';
+import { Grid, Header, Pagination } from 'semantic-ui-react';
 
 import RepositoryService from '../../services/RepositoryService';
 import SideMenu from '../../components/SideMenu';
@@ -11,18 +11,27 @@ class RepositoryList extends React.Component {
     super(props);
 
     this.state = {
+      activePage: 1,
+      totalPages: 1,
       repositories: [],
     };
+
+    this.handlePaginationChange = this.handlePaginationChange.bind(this);
   }
 
   componentDidMount() {
     this.getRepositories();
   }
 
+  handlePaginationChange(e, value) {
+    this.setState({ activePage: value.activePage }, this.updateDataTableList);
+    window.scrollTo(0, 0);
+  }
+
   getRepositories() {
     RepositoryService.fetchRepositories()
       .then((res) => {
-        this.setState({ repositories: res.data });
+        this.setState({ repositories: res.data.results });
         return res;
       })
       .catch((error) => {
@@ -31,7 +40,7 @@ class RepositoryList extends React.Component {
   }
 
   render() {
-    const { repositories } = this.state;
+    const { activePage, totalPages, repositories } = this.state;
 
     return (
       <Grid className="home" relaxed="very">
@@ -52,6 +61,16 @@ class RepositoryList extends React.Component {
 
               <Grid.Row>
                 <RepositoryDataTable repositories={repositories} />
+              </Grid.Row>
+
+              <Grid.Row className="pagination">
+                <Pagination
+                  activePage={activePage}
+                  nextItem={false}
+                  prevItem={false}
+                  totalPages={totalPages}
+                  onPageChange={this.handlePaginationChange}
+                />
               </Grid.Row>
             </Grid.Column>
           </Grid>
