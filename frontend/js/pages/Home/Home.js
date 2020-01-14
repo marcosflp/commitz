@@ -129,10 +129,7 @@ class Home extends React.Component {
               </Grid.Row>
 
               <Grid.Row>
-                <DataTable
-                  dataTableList={dataTableList}
-                  onRepositoryNameClick={this.handleRepositoryFilter}
-                />
+                <DataTable dataTableList={dataTableList} />
               </Grid.Row>
             </Grid.Column>
           </Grid>

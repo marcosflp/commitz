@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 from common.exceptions import RepositoryNotBelongToUserException
 from common.mixins import ValidateWebHookSignatureMixin
 from core.models import Commit, Repository
-from core.serializers import HomeSerializer, RepositorySerializer, RepositoryRegistrationSerializer
+from core.serializers import HomeSerializer, RepositorySerializer, RepositoryRegistrationSerializer, CommitSerializer
 from services.core import CommitService
 from services.core import RepositoryService
 from services.users import GitHubProfileService
@@ -97,3 +97,13 @@ class RepositoryWebhookView(ValidateWebHookSignatureMixin, APIView):
         )
 
         return Response({'message': 'ok'}, status=status.HTTP_200_OK)
+
+
+class CommitViewSet(viewsets.ModelViewSet):
+    serializer_class = CommitSerializer
+    filter_backends = (SearchFilter, DjangoFilterBackend)
+    filter_fields = ('repository', 'author')
+    search_fields = ('^message',)
+
+    def get_queryset(self):
+        return Commit.objects.filter(repository__user=self.request.user)

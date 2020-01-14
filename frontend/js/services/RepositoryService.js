@@ -9,9 +9,13 @@ class RepositoryService extends BackendService {
 
   fetchRepositories(params) {
     if (params !== undefined) {
-      return this.backendApi().get('/repositories', { params });
+      return this.backendApi().get('/repositories/', { params });
     }
-    return this.backendApi().get('/repositories');
+    return this.backendApi().get('/repositories/');
+  }
+
+  fetchRepository(repositoryId) {
+    return this.backendApi().get(`repositories/${repositoryId}/`);
   }
 }
 

@@ -7,6 +7,7 @@ import ExternalRedirect from '../utils';
 import { GitHubLoginUri } from '../constants';
 
 import Home from './Home';
+import RepositoryDetail from './Repository';
 import CompleteGitHubAuth from './CompleteGitHubAuth';
 import Login from './Login';
 
@@ -34,6 +35,10 @@ const Root = () => {
 
             <Route exact path="/">
               <Home />
+            </Route>
+
+            <Route exact path="/repositories/:repositoryId">
+              <RepositoryDetail />
             </Route>
           </div>
         </Switch>
