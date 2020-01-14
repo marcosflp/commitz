@@ -6,12 +6,13 @@ from django.utils.translation import ugettext_lazy as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from common.exceptions import RepositoryNotBelongToUserException
+from common.exceptions import RepositoryNotBelongToUserException, RepositoryAlreadyExistsException
 from common.mixins import ValidateWebHookSignatureMixin
 from core.models import Commit, Repository
 from core.serializers import HomeSerializer, RepositorySerializer, RepositoryRegistrationSerializer, CommitSerializer
@@ -55,11 +56,11 @@ class RepositoryViewSet(viewsets.ModelViewSet):
             except github.UnknownObjectException:
                 data = {'message': _('Repositório não encontrado.')}
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
-            except GitHubProfile.DoesNotExist:
-                data = {'message': _('Seu usuário não possui uma conta do GitHub associada.')}
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
             except RepositoryNotBelongToUserException:
                 data = {'message': _('Esse repositório não pertence a seu usuário.')}
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            except RepositoryAlreadyExistsException:
+                data = {'message': _(f'O repositório "{serializer.data["full_name"]}" já está registrado.')}
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
             else:
                 data = {'message': _(f'Repositório "{repository}" registrado com sucesso. Atualize a página para visualizá-los')}
