@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 class RepositoryDataTable extends React.Component {
   renderTableRows() {
@@ -9,7 +10,9 @@ class RepositoryDataTable extends React.Component {
     return repositories.map((data) => {
       return (
         <Table.Row key={data.pk}>
-          <Table.Cell>{data.name}</Table.Cell>
+          <Table.Cell>
+            <Link to={`repositories/${data.pk}`}>{data.name}</Link>
+          </Table.Cell>
           <Table.Cell>{data.description}</Table.Cell>
           <Table.Cell>{data.language}</Table.Cell>
           <Table.Cell>{data.stargazers_count}</Table.Cell>
