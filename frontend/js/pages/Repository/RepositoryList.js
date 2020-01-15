@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Header, Pagination } from 'semantic-ui-react';
 
 import RepositoryService from '../../services/RepositoryService';
+import LoadingDataTable from '../../components/LoadingTable';
 
 import RepositoryDataTable from './RepositoryDataTable';
 
@@ -13,6 +14,7 @@ class RepositoryList extends React.Component {
       activePage: 1,
       totalPages: 1,
       repositories: [],
+      isLoadingRepositories: true,
     };
 
     this.handlePaginationChange = this.handlePaginationChange.bind(this);
@@ -30,7 +32,7 @@ class RepositoryList extends React.Component {
   getRepositories() {
     RepositoryService.fetchRepositories()
       .then((res) => {
-        this.setState({ repositories: res.data.results });
+        this.setState({ repositories: res.data.results, isLoadingRepositories: false });
         return res;
       })
       .catch((error) => {
@@ -39,7 +41,14 @@ class RepositoryList extends React.Component {
   }
 
   render() {
-    const { activePage, totalPages, repositories } = this.state;
+    const { activePage, totalPages, repositories, isLoadingRepositories } = this.state;
+    let activeTable;
+
+    if (isLoadingRepositories) {
+      activeTable = <LoadingDataTable totalColumns={4} totalRows={10} />;
+    } else {
+      activeTable = <RepositoryDataTable repositories={repositories} />;
+    }
 
     return (
       <Grid>
@@ -52,9 +61,7 @@ class RepositoryList extends React.Component {
             <div>Seus repositórios</div>
           </Grid.Row>
 
-          <Grid.Row>
-            <RepositoryDataTable repositories={repositories} />
-          </Grid.Row>
+          <Grid.Row>{activeTable}</Grid.Row>
 
           <Grid.Row className="pagination">
             <Pagination

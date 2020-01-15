@@ -2,11 +2,10 @@ import React from 'react';
 import { Grid, Header, Label, Icon } from 'semantic-ui-react';
 import { Redirect, withRouter } from 'react-router-dom';
 
-import SideMenu from 'components/SideMenu';
-
 import AuthService from '../../services/AuthService';
 import CommitService from '../../services/CommitService';
 import RepositoryService from '../../services/RepositoryService';
+import LoadingDataTable from '../../components/LoadingTable';
 
 import DataTable from './DataTable';
 
@@ -19,6 +18,7 @@ class RepositoryDetail extends React.Component {
     this.state = {
       repository: {},
       commits: [],
+      isLoading: true,
     };
   }
 
@@ -43,7 +43,7 @@ class RepositoryDetail extends React.Component {
   getRepositoryCommits(repositoryId) {
     CommitService.fetchCommits({ repository: repositoryId })
       .then((res) => {
-        this.setState({ commits: res.data.results });
+        this.setState({ commits: res.data.results, isLoading: false });
         return res;
       })
       .catch((error) => {
@@ -56,7 +56,14 @@ class RepositoryDetail extends React.Component {
       return <Redirect to="/login" />;
     }
 
-    const { repository, commits } = this.state;
+    const { repository, commits, isLoading } = this.state;
+    let activeTable;
+
+    if (isLoading) {
+      activeTable = <LoadingDataTable totalColumns={4} totalRows={10} />;
+    } else {
+      activeTable = <DataTable dataTableList={commits} />;
+    }
 
     return (
       <Grid>
@@ -78,9 +85,7 @@ class RepositoryDetail extends React.Component {
             </Label>
           </Grid.Row>
 
-          <Grid.Row>
-            <DataTable dataTableList={commits} />
-          </Grid.Row>
+          <Grid.Row>{activeTable}</Grid.Row>
         </Grid.Column>
       </Grid>
     );

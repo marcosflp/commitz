@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import AuthService from '../../services/AuthService';
 import CommitService from '../../services/CommitService';
 import RepositoryService from '../../services/RepositoryService';
+import LoadingDataTable from '../../components/LoadingTable';
 
 import CommitDataTable from './CommitDataTable';
 
@@ -18,6 +19,7 @@ class CommitList extends React.Component {
       activePage: 1,
       totalPages: 1,
       dataTableCommits: [],
+      isLoadingDataTableCommits: true,
       repositoryDropdownOptions: [],
       repositoryDropdownValue: null,
       repositoryFilteredID: null,
@@ -77,13 +79,19 @@ class CommitList extends React.Component {
     const { activePage, repositoryFilteredID } = this.state;
     const query = { page: activePage };
 
+    this.setState({ isLoadingDataTableCommits: true });
+
     if (repositoryFilteredID !== null) {
       query.repository = repositoryFilteredID;
     }
 
     CommitService.fetchDataTable(query)
       .then((res) => {
-        this.setState({ dataTableCommits: res.data.results, totalPages: res.data.total_pages });
+        this.setState({
+          dataTableCommits: res.data.results,
+          totalPages: res.data.total_pages,
+          isLoadingDataTableCommits: false,
+        });
         return res;
       })
       .catch((error) => {
@@ -101,8 +109,16 @@ class CommitList extends React.Component {
       totalPages,
       repositoryDropdownOptions,
       dataTableCommits,
+      isLoadingDataTableCommits,
       repositoryDropdownValue,
     } = this.state;
+    let activeTable;
+
+    if (isLoadingDataTableCommits) {
+      activeTable = <LoadingDataTable totalColumns={4} totalRows={10} />;
+    } else {
+      activeTable = <CommitDataTable dataTableCommits={dataTableCommits} />;
+    }
 
     return (
       <Grid>
@@ -131,9 +147,7 @@ class CommitList extends React.Component {
             </div>
           </Grid.Row>
 
-          <Grid.Row>
-            <CommitDataTable dataTableCommits={dataTableCommits} />
-          </Grid.Row>
+          <Grid.Row>{activeTable}</Grid.Row>
 
           <Grid.Row className="pagination">
             <Pagination
