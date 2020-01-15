@@ -1,6 +1,6 @@
 import React from 'react';
-import { Grid, Header, Dropdown, Icon, Pagination } from 'semantic-ui-react';
-import { Redirect } from 'react-router-dom';
+import { Grid, Header, Dropdown, Icon, Pagination, Breadcrumb } from 'semantic-ui-react';
+import { Redirect, Link } from 'react-router-dom';
 
 import AuthService from '../../services/AuthService';
 import CommitService from '../../services/CommitService';
@@ -123,9 +123,17 @@ class CommitList extends React.Component {
     return (
       <Grid>
         <Grid.Column>
-          <Header as="h1" className="header-page" dividing>
-            Commits
-          </Header>
+          <div className="page-header">
+            <Breadcrumb>
+              <Breadcrumb.Section>
+                <Link to="/">Commits</Link>
+              </Breadcrumb.Section>
+            </Breadcrumb>
+
+            <Header as="h1" dividing>
+              Commits
+            </Header>
+          </div>
 
           <Grid.Row className="container-utils">
             <div className="select-repository">

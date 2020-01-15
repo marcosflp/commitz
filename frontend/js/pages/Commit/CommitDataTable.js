@@ -11,7 +11,7 @@ class CommitDataTable extends React.Component {
       return (
         <Table.Row key={data.sha}>
           <Table.Cell>
-            <Header as="h4" image>
+            <Header as="div" image>
               <Image rounded size="mini" src={data.author.avatar_url} />
               <Header.Content>
                 <Header.Subheader>{data.author.name}</Header.Subheader>

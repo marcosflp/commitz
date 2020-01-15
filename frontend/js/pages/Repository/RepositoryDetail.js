@@ -1,11 +1,12 @@
 import React from 'react';
-import { Grid, Header, Label, Icon } from 'semantic-ui-react';
-import { Redirect, withRouter } from 'react-router-dom';
+import { Grid, Header, Label, Icon, Breadcrumb } from 'semantic-ui-react';
+import { Redirect, withRouter, Link } from 'react-router-dom';
 
 import AuthService from '../../services/AuthService';
 import CommitService from '../../services/CommitService';
 import RepositoryService from '../../services/RepositoryService';
 import LoadingDataTable from '../../components/LoadingTable';
+import LoadingHeader from '../../components/LoadingHeader';
 
 import DataTable from './DataTable';
 
@@ -58,20 +59,39 @@ class RepositoryDetail extends React.Component {
 
     const { repository, commits, isLoading } = this.state;
     let activeTable;
+    let activeHeader;
 
     if (isLoading) {
       activeTable = <LoadingDataTable totalColumns={4} totalRows={10} />;
+      activeHeader = <LoadingHeader />;
     } else {
       activeTable = <DataTable dataTableList={commits} />;
+      activeHeader = (
+        <Header as="h1" className="header-page">
+          {repository.full_name}
+          <Header.Subheader>{repository.description}</Header.Subheader>
+        </Header>
+      );
     }
 
     return (
       <Grid>
         <Grid.Column>
-          <Header as="h1" className="header-page">
-            {repository.full_name}
-            <Header.Subheader>{repository.description}</Header.Subheader>
-          </Header>
+          <div className="page-header">
+            <Breadcrumb>
+              <Breadcrumb.Section>
+                <Link to="/repositories">Repositórios</Link>
+              </Breadcrumb.Section>
+
+              <Breadcrumb.Divider icon="right angle" />
+
+              <Breadcrumb.Section>
+                <Link to="/repositories">{repository.name}</Link>
+              </Breadcrumb.Section>
+            </Breadcrumb>
+
+            {activeHeader}
+          </div>
 
           <Grid.Row className="container-utils">
             <Label>

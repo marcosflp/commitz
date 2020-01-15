@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, Header, Pagination } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Grid, Header, Pagination, Breadcrumb } from 'semantic-ui-react';
 
 import RepositoryService from '../../services/RepositoryService';
 import LoadingDataTable from '../../components/LoadingTable';
@@ -53,9 +54,17 @@ class RepositoryList extends React.Component {
     return (
       <Grid>
         <Grid.Column>
-          <Header as="h1" className="header-page" dividing>
-            Repositórios
-          </Header>
+          <div className="page-header">
+            <Breadcrumb>
+              <Breadcrumb.Section>
+                <Link to="/repositories">Repositórios</Link>
+              </Breadcrumb.Section>
+            </Breadcrumb>
+
+            <Header as="h1" className="header-page" dividing>
+              Repositórios
+            </Header>
+          </div>
 
           <Grid.Row className="container-utils">
             <div>Seus repositórios</div>
