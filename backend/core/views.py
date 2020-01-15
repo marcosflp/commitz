@@ -6,7 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -22,7 +21,17 @@ from services.users import GitHubProfileService
 from users.models import GitHubProfile
 
 
-class HomeViewSet(viewsets.ReadOnlyModelViewSet):
+class CommitViewSet(viewsets.ModelViewSet):
+    serializer_class = CommitSerializer
+    filter_backends = (SearchFilter, DjangoFilterBackend)
+    filter_fields = ('repository', 'author')
+    search_fields = ('^message',)
+
+    def get_queryset(self):
+        return Commit.objects.filter(repository__user=self.request.user)
+
+
+class CommitHomeViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = HomeSerializer
     filter_backends = (SearchFilter, DjangoFilterBackend)
     filter_fields = ('repository', 'author')
@@ -98,13 +107,3 @@ class RepositoryWebhookView(ValidateWebHookSignatureMixin, APIView):
         )
 
         return Response({'message': 'ok'}, status=status.HTTP_200_OK)
-
-
-class CommitViewSet(viewsets.ModelViewSet):
-    serializer_class = CommitSerializer
-    filter_backends = (SearchFilter, DjangoFilterBackend)
-    filter_fields = ('repository', 'author')
-    search_fields = ('^message',)
-
-    def get_queryset(self):
-        return Commit.objects.filter(repository__user=self.request.user)

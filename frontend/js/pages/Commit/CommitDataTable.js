@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Header, Table, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-class DataTable extends React.Component {
+class CommitDataTable extends React.Component {
   renderTableRows() {
-    const { dataTableList } = this.props;
+    const { dataTableCommits } = this.props;
 
-    return dataTableList.map((data) => {
+    return dataTableCommits.map((data) => {
       return (
         <Table.Row key={data.sha}>
           <Table.Cell>
@@ -46,8 +46,8 @@ class DataTable extends React.Component {
   }
 }
 
-DataTable.propTypes = {
-  dataTableList: PropTypes.array,
+CommitDataTable.propTypes = {
+  dataTableCommits: PropTypes.array,
 };
 
-export default DataTable;
+export default CommitDataTable;
