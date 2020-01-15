@@ -28,7 +28,9 @@ class CommitViewSet(viewsets.ModelViewSet):
     search_fields = ('^message',)
 
     def get_queryset(self):
-        return Commit.objects.filter(repository__user=self.request.user)
+        return Commit.objects.filter(
+            repository__user=self.request.user
+        ).order_by('-authored_date')
 
 
 class CommitHomeViewSet(viewsets.ReadOnlyModelViewSet):
@@ -48,34 +50,36 @@ class RepositoryViewSet(viewsets.ModelViewSet):
     search_fields = ('^full_name', '^name', 'description')
 
     def get_queryset(self):
-        return Repository.objects.filter(user=self.request.user)
+        return Repository.objects.filter(
+            user=self.request.user
+        ).order_by('full_name')
 
     @action(methods=['post'], detail=False)
     def add_new_repository_by_full_name(self, request):
         serializer = RepositoryRegistrationSerializer(data=request.data)
-
-        if serializer.is_valid():
-            try:
-                repository = RepositoryService.add_and_monitor_new_repository(
-                    user=request.user,
-                    full_name=serializer.data['full_name'],
-                    githubprofile_service=GitHubProfileService,
-                    commit_service=CommitService
-                )
-            except github.UnknownObjectException:
-                data = {'message': _('Repositório não encontrado.')}
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
-            except RepositoryNotBelongToUserException:
-                data = {'message': _('Esse repositório não pertence a seu usuário.')}
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
-            except RepositoryAlreadyExistsException:
-                data = {'message': _(f'O repositório "{serializer.data["full_name"]}" já está registrado.')}
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                data = {'message': _(f'Repositório "{repository}" registrado com sucesso. Atualize a página para visualizá-los')}
-                return Response(data, status=status.HTTP_201_CREATED)
-        else:
+        if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            repository = RepositoryService.add_and_monitor_new_repository(
+                user=request.user,
+                full_name=serializer.data['full_name'],
+                githubprofile_service=GitHubProfileService,
+                commit_service=CommitService
+            )
+        except github.UnknownObjectException:
+            data = {'message': _('Repositório não encontrado.')}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        except RepositoryNotBelongToUserException:
+            data = {'message': _('Esse repositório não pertence a seu usuário.')}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        except RepositoryAlreadyExistsException:
+            data = {'message': _(f'O repositório "{serializer.data["full_name"]}" já está registrado.')}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            data = {'message': _(
+                f'Repositório "{repository}" registrado com sucesso. Atualize a página para visualizá-los')}
+            return Response(data, status=status.HTTP_201_CREATED)
 
 
 class RepositoryWebhookView(ValidateWebHookSignatureMixin, APIView):

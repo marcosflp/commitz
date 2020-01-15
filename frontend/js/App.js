@@ -37,25 +37,35 @@ const App = () => {
             </Route>
 
             <Grid className="home" relaxed="very">
-              {/* pusher to compensate the sidebar width */}
-              <Grid.Column width={4}></Grid.Column>
-
-              <Grid.Column className="main-container" width={12}>
-                <Route exact path="/repositories">
+              <Route exact path="/repositories">
+                <Grid.Column width={4}>
                   <SideMenu activeItem="repositories" />
+                </Grid.Column>
+
+                <Grid.Column className="main-container" width={12}>
                   <RepositoryList />
-                </Route>
+                </Grid.Column>
+              </Route>
 
-                <Route exact path="/repositories/:repositoryId">
+              <Route exact path="/repositories/:repositoryId">
+                <Grid.Column width={4}>
                   <SideMenu activeItem="repositories" />
-                  <RepositoryDetail />
-                </Route>
+                </Grid.Column>
 
-                <Route exact path="/">
+                <Grid.Column className="main-container" width={12}>
+                  <RepositoryDetail />
+                </Grid.Column>
+              </Route>
+
+              <Route exact path="/">
+                <Grid.Column width={4}>
                   <SideMenu activeItem="commits" />
+                </Grid.Column>
+
+                <Grid.Column className="main-container" width={12}>
                   <CommitList />
-                </Route>
-              </Grid.Column>
+                </Grid.Column>
+              </Route>
             </Grid>
           </div>
         </Switch>

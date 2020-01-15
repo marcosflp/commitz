@@ -23,7 +23,7 @@ class RepositorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Repository
         fields = (
-            'pk', 'github_id', 'owner', 'name', 'full_name', 'description', 'language', 'stargazers_count',
+            'pk', 'user', 'github_id', 'owner', 'name', 'full_name', 'description', 'language', 'stargazers_count',
             'archived', 'disabled', 'clone_url', 'git_url', 'created_at', 'updated_at'
         )
 

@@ -16,7 +16,8 @@ urlpatterns = [
     # Essa URL está aqui para carregar o Frontend e manter a querystring da resposta do GitHub
     # Se a URL for diferente de r'^$' Django retorna 404, porque a rota está registrada no Front
     url('^login', TemplateView.as_view(template_name='core/home.html'), name='login'),
-    url('^repositories', TemplateView.as_view(template_name='core/home.html'), name='login'),
+    url('^logout', TemplateView.as_view(template_name='core/home.html'), name='logout'),
+    url('^repositories', TemplateView.as_view(template_name='core/home.html'), name='repositories'),
 
     url(r'^$', TemplateView.as_view(template_name='core/home.html'), name='home'),
 ]
