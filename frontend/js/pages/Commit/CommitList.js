@@ -3,21 +3,21 @@ import { Grid, Header, Dropdown, Icon, Pagination } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 
 import AuthService from '../../services/AuthService';
-import HomeService from '../../services/HomeService';
+import CommitService from '../../services/CommitService';
 import RepositoryService from '../../services/RepositoryService';
 
-import DataTable from './DataTable';
+import CommitDataTable from './CommitDataTable';
 
 import './style.scss';
 
-class Home extends React.Component {
+class CommitList extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       activePage: 1,
       totalPages: 1,
-      dataTableList: [],
+      dataTableCommits: [],
       repositoryDropdownOptions: [],
       repositoryDropdownValue: null,
       repositoryFilteredID: null,
@@ -31,10 +31,6 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    if (!AuthService.isUserAuthenticated()) {
-      return null;
-    }
-
     this.updateDataTableList();
     this.getRepositoryDropdownOptions();
   }
@@ -54,14 +50,14 @@ class Home extends React.Component {
 
   handleRepositoryDropDownValueChange(e, object) {
     this.setState(
-      { repositoryFilteredID: object.value, repositoryDropdownValue: object.value },
+      { repositoryFilteredID: object.value, repositoryDropdownValue: object.value, activePage: 1 },
       this.updateDataTableList
     );
   }
 
   handleRepositoryDropDownValueClear() {
     this.setState(
-      { repositoryDropdownValue: null, repositoryFilteredID: null },
+      { repositoryDropdownValue: null, repositoryFilteredID: null, activePage: 1 },
       this.updateDataTableList
     );
   }
@@ -85,9 +81,9 @@ class Home extends React.Component {
       query.repository = repositoryFilteredID;
     }
 
-    HomeService.fetchDataTable(query)
+    CommitService.fetchDataTable(query)
       .then((res) => {
-        this.setState({ dataTableList: res.data.results, totalPages: res.data.total_pages });
+        this.setState({ dataTableCommits: res.data.results, totalPages: res.data.total_pages });
         return res;
       })
       .catch((error) => {
@@ -104,7 +100,7 @@ class Home extends React.Component {
       activePage,
       totalPages,
       repositoryDropdownOptions,
-      dataTableList,
+      dataTableCommits,
       repositoryDropdownValue,
     } = this.state;
 
@@ -136,7 +132,7 @@ class Home extends React.Component {
           </Grid.Row>
 
           <Grid.Row>
-            <DataTable dataTableList={dataTableList} />
+            <CommitDataTable dataTableCommits={dataTableCommits} />
           </Grid.Row>
 
           <Grid.Row className="pagination">
@@ -154,4 +150,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+export default CommitList;

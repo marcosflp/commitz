@@ -1,77 +1,62 @@
 import React from 'react';
-import { Menu, Icon, Label, Button, Image } from 'semantic-ui-react';
+import { Menu, Icon, Label, Button, Image, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import RepositoryAddNew from '../RepositoryAddNew';
-
 import './style.scss';
 
 class SideMenu extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activeItem: 'commits',
-    };
-
-    this.handleMenuItemClick = this.handleMenuItemClick.bind(this);
-  }
-
-  handleMenuItemClick(e, { name }) {
-    this.setState({ activeItem: name });
-  }
-
   render() {
-    const { activeItem } = this.state;
+    const { activeItem } = this.props;
 
     return (
-      <Menu className="main-menu" fixed="left" vertical>
-        <Menu.Item as="h3" className="logo" header>
-          <Icon name="sitemap" size="large" />
-          CommitZ...
-        </Menu.Item>
+      <Grid.Column width={4}>
+        <Menu className="main-menu" fixed="left" vertical>
+          <Menu.Item as="h3" className="logo" header>
+            <Icon name="sitemap" size="large" />
+            CommitZ...
+          </Menu.Item>
 
-        <Menu.Item className="add-repository">
-          <RepositoryAddNew />
-        </Menu.Item>
+          <Menu.Item className="add-repository">
+            <RepositoryAddNew />
+          </Menu.Item>
 
-        <Menu.Item
-          active={activeItem === 'commits'}
-          as={Link}
-          name="commits"
-          to="/"
-          onClick={this.handleMenuItemClick}
-        >
-          Commits
-          <Icon name="folder" />
-        </Menu.Item>
+          <Menu.Item active={activeItem === 'commits'} as={Link} name="commits" to="/">
+            Commits
+            <Icon name="folder" />
+          </Menu.Item>
 
-        <Menu.Item
-          active={activeItem === 'repositories'}
-          as={Link}
-          name="repositories"
-          to="/repositories"
-          onClick={this.handleMenuItemClick}
-        >
-          Repositórios
-          <Icon name="folder" />
-        </Menu.Item>
+          <Menu.Item
+            active={activeItem === 'repositories'}
+            as={Link}
+            name="repositories"
+            to="/repositories"
+          >
+            Repositórios
+            <Icon name="folder" />
+          </Menu.Item>
 
-        <Menu.Item className="logout" position="right">
-          <div className="user">
-            <Label as="a" image>
-              <Image src="https://react.semantic-ui.com/images/avatar/small/elliot.jpg" />
-              Nome do usuário
-            </Label>
-          </div>
+          <Menu.Item className="logout" position="right">
+            <div className="user">
+              <Label as="a" image>
+                <Image src="https://react.semantic-ui.com/images/avatar/small/elliot.jpg" />
+                Nome do usuário
+              </Label>
+            </div>
 
-          <Link to="/logout">
-            <Button circular floated="right" icon="log out" />
-          </Link>
-        </Menu.Item>
-      </Menu>
+            <Link to="/logout">
+              <Button circular floated="right" icon="log out" />
+            </Link>
+          </Menu.Item>
+        </Menu>
+      </Grid.Column>
     );
   }
 }
+
+SideMenu.propTypes = {
+  activeItem: PropTypes.bool,
+};
 
 export default SideMenu;

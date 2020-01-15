@@ -11,7 +11,7 @@ class RepositoryDataTable extends React.Component {
       return (
         <Table.Row key={data.pk}>
           <Table.Cell>
-            <Link to={`repositories/${data.pk}`}>{data.name}</Link>
+            <Link to={`/repositories/${data.pk}`}>{data.name}</Link>
           </Table.Cell>
           <Table.Cell>{data.description}</Table.Cell>
           <Table.Cell>{data.language}</Table.Cell>
