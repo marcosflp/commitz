@@ -34,7 +34,7 @@ class RepositoryList extends React.Component {
         return res;
       })
       .catch((error) => {
-        alert(error);
+        throw new Error(error.data);
       });
   }
 

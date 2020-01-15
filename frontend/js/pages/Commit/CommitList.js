@@ -87,7 +87,7 @@ class CommitList extends React.Component {
         return res;
       })
       .catch((error) => {
-        alert(error.data);
+        throw new Error(error.data);
       });
   }
 

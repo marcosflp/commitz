@@ -36,7 +36,7 @@ class RepositoryDetail extends React.Component {
         return res;
       })
       .catch((error) => {
-        alert(error.data);
+        throw new Error(error.data);
       });
   }
 
@@ -47,7 +47,7 @@ class RepositoryDetail extends React.Component {
         return res;
       })
       .catch((error) => {
-        alert(error);
+        throw new Error(error.data);
       });
   }
 
