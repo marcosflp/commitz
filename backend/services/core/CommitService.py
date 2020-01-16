@@ -8,6 +8,8 @@ from core.models import Commit
 
 LOGGER = logging.getLogger(__name__)
 
+CACHED_AUTHORS = {}
+
 
 @transaction.atomic
 def update_repository_commits(
@@ -21,6 +23,8 @@ def update_repository_commits(
 
     Returns (int): total commits created.
     """
+    LOGGER.info(f'Updating repository "{repository.full_name}" Commits.')
+
     commits_pagination_limit = 10
     github_api = Github(user.githubprofile.access_token)
 
@@ -71,6 +75,7 @@ def update_repository_commits(
 
 def get_commit_author(github_commit):
     from services.users.GitHubProfileService import update_or_create_githubprofile
+    global CACHED_AUTHORS
 
     if github_commit.author:
         data = {
@@ -82,6 +87,11 @@ def get_commit_author(github_commit):
             'created_at': make_aware(github_commit.author.created_at),
             'updated_at': make_aware(github_commit.author.updated_at),
         }
+
+        if not CACHED_AUTHORS.get(github_commit.author.id):
+            CACHED_AUTHORS[github_commit.author.id] = update_or_create_githubprofile(profile_data=data)
+
+        return CACHED_AUTHORS[github_commit.author.id]
     else:
         # As it was not possible to find a registered GitHub account for the author
         # create a GitHubProfile without github ID. We need create the profile to keep track commit authors.
@@ -95,8 +105,7 @@ def get_commit_author(github_commit):
             'updated_at': None,
         }
 
-    profile = update_or_create_githubprofile(
-        profile_data=data
-    )
+        if not CACHED_AUTHORS.get(github_commit.commit.author.email):
+            CACHED_AUTHORS[github_commit.commit.author.email] = update_or_create_githubprofile(profile_data=data)
 
-    return profile
+        return CACHED_AUTHORS[github_commit.commit.author.email]

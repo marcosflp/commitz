@@ -5,9 +5,34 @@ import PropTypes from 'prop-types';
 
 import RepositoryAddNew from '../RepositoryAddNew';
 import './style.scss';
+import UserService from '../../services/UserService';
 
 class SideMenu extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: '',
+      avatarUrl: '',
+    };
+  }
+
+  componentDidMount() {
+    this.getUserData();
+  }
+
+  getUserData() {
+    UserService.fetchCurrentUser().then((res) => {
+      this.setState({
+        username: res.data.results[0].name || res.data.results[0].username,
+        avatarUrl: res.data.results[0].githubprofile.avatar_url,
+      });
+      return res;
+    });
+  }
+
   render() {
+    const { username, avatarUrl } = this.state;
     const { activeItem } = this.props;
 
     return (
@@ -38,9 +63,9 @@ class SideMenu extends React.Component {
 
         <Menu.Item className="logout" position="right">
           <div className="user">
-            <Label as="a" image>
-              <Image src="https://react.semantic-ui.com/images/avatar/small/elliot.jpg" />
-              Nome do usuário
+            <Label image>
+              <Image src={avatarUrl} />
+              {username}
             </Label>
           </div>
 

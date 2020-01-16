@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Header, Table, Image } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 
 class CommitDataTable extends React.Component {
   renderTableRows() {
-    const { dataTableCommits } = this.props;
+    const { dataTableCommits, onRepositoryNameClick } = this.props;
 
     return dataTableCommits.map((data) => {
       return (
@@ -20,7 +19,16 @@ class CommitDataTable extends React.Component {
           </Table.Cell>
           <Table.Cell width={8}>{data.message}</Table.Cell>
           <Table.Cell>
-            <Link to={`repositories/${data.repository.pk}/`}>{data.repository.full_name}</Link>
+            <span
+              className="fake-link"
+              id={data.repository.pk}
+              role="link"
+              tabIndex={0}
+              onClick={onRepositoryNameClick}
+              onKeyPress={onRepositoryNameClick}
+            >
+              {data.repository.full_name}
+            </span>
           </Table.Cell>
           <Table.Cell>{new Date(data.authored_date).toLocaleDateString()}</Table.Cell>
         </Table.Row>
@@ -48,6 +56,7 @@ class CommitDataTable extends React.Component {
 
 CommitDataTable.propTypes = {
   dataTableCommits: PropTypes.array,
+  onRepositoryNameClick: PropTypes.func,
 };
 
 export default CommitDataTable;

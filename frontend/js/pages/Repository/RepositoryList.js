@@ -48,6 +48,8 @@ class RepositoryList extends React.Component {
 
     if (isLoadingRepositories) {
       activeTable = <LoadingDataTable totalColumns={4} totalRows={10} />;
+    } else {
+      activeTable = <RepositoryDataTable repositories={repositories} />;
       pagination = (
         <Pagination
           activePage={activePage}
@@ -57,8 +59,6 @@ class RepositoryList extends React.Component {
           onPageChange={this.handlePaginationChange}
         />
       );
-    } else {
-      activeTable = <RepositoryDataTable repositories={repositories} />;
     }
 
     return (

@@ -117,6 +117,13 @@ class CommitList extends React.Component {
 
     if (isLoadingDataTableCommits) {
       activeTable = <LoadingDataTable totalColumns={4} totalRows={10} />;
+    } else {
+      activeTable = (
+        <CommitDataTable
+          dataTableCommits={dataTableCommits}
+          onRepositoryNameClick={this.handleRepositoryFilter}
+        />
+      );
       pagination = (
         <Pagination
           activePage={activePage}
@@ -126,8 +133,6 @@ class CommitList extends React.Component {
           onPageChange={this.handlePaginationChange}
         />
       );
-    } else {
-      activeTable = <CommitDataTable dataTableCommits={dataTableCommits} />;
     }
 
     return (

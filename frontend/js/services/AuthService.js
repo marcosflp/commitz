@@ -21,7 +21,7 @@ class AuthService {
   }
 
   logOutUser() {
-    localStorage.removeItem('token');
+    localStorage.clear();
     return <Redirect to="/login" />;
   }
 }

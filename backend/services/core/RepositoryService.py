@@ -91,9 +91,11 @@ def add_and_monitor_new_repository(user, full_name, githubprofile_service, commi
     try:
         git_repository.create_hook("web", config, events, active=True)
     except GithubException as exc:
-        if exec.status == 422:
+        if exc.status == 422:
             # Hook already exists for this repository
             pass
+        else:
+            raise exc
 
     return repository
 
