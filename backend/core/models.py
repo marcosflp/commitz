@@ -58,7 +58,7 @@ class Commit(models.Model):
 class Content(models.Model):
     repository = models.ForeignKey('core.Repository', on_delete=models.CASCADE)
 
-    sha = models.CharField(max_length=64, unique=True)
+    sha = models.CharField(max_length=64)
     name = models.CharField(max_length=128)
 
     type = models.CharField(max_length=32, blank=True, default='')
@@ -67,6 +67,9 @@ class Content(models.Model):
 
     url = models.URLField(blank=True, default='')
     download_url = models.URLField(blank=True, default='')
+
+    class Meta:
+        unique_together = ('repository', 'sha')
 
     def __str__(self):
         return self.name
