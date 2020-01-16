@@ -56,13 +56,8 @@ def add_new_repository(user, full_name, githubprofile_service, commit_service):
         repository,
         since=timezone.now() - datetime.timedelta(days=30)
     )
-    if total_commits_created == 0:
-        # No commits found. Try to get all latest commits
-        commit_service.update_repository_commits(
-            user,
-            repository,
-        )
 
+    LOGGER.info(f'{total_commits_created} Commits created for {full_name}')
     return repository
 
 
