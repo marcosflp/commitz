@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Commit, Repository
+from core.models import Commit, Repository, Content
 from users.serializers import AuthorHomeSerializer
 
 
@@ -41,3 +41,9 @@ class CommitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Commit
         fields = ('sha', 'repository', 'message', 'author', 'authored_date')
+
+
+class ContentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Content
+        fields = ('pk', 'repository', 'sha', 'name', 'type', 'path', 'size', 'url', 'download_url')

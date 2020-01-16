@@ -6,7 +6,6 @@ from django.db import transaction
 from django.utils import timezone
 from django.utils.timezone import make_aware
 from github import Github
-from rest_framework.exceptions import ValidationError
 
 from common.exceptions import RepositoryNotBelongToUserException, RepositoryAlreadyExistsException
 from core.models import Repository
@@ -68,7 +67,7 @@ def add_new_repository(user, full_name, githubprofile_service, commit_service):
 
 
 @transaction.atomic
-def add_and_monitor_new_repository(user, full_name, githubprofile_service, commit_service):
+def add_and_monitor_new_repository(user, full_name, githubprofile_service, commit_service, content_service):
     """
     Add new repository to the user and create ae GitHub Webhook to monitor new commits.
     """
@@ -76,6 +75,7 @@ def add_and_monitor_new_repository(user, full_name, githubprofile_service, commi
         raise RepositoryAlreadyExistsException
 
     repository = add_new_repository(user, full_name, githubprofile_service, commit_service)
+    content_service.update_repository_contents(user, repository)
 
     events = ["push"]
     config = {

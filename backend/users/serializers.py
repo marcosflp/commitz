@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from users.models import User
+from users.models import User, GitHubProfile
 
 
 class AuthorHomeSerializer(serializers.ModelSerializer):
@@ -22,3 +22,17 @@ class AuthorHomeSerializer(serializers.ModelSerializer):
             return obj.githubprofile.avatar_url
         else:
             return ''
+
+
+class GitHubProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GitHubProfile
+        fields = ('pk', 'github_id', 'access_token', 'login', 'name', 'email', 'avatar_url')
+
+
+class UserSerializer(serializers.ModelSerializer):
+    githubprofile = GitHubProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ('pk', 'username', 'email', 'githubprofile')

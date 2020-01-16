@@ -11,6 +11,7 @@ urlpatterns = [
 
     url('^api/auth/', include('rest_social_auth.urls_token')),
     url('^api/', include('core.urls')),
+    url('^api/', include('users.urls')),
 
     # TODO: Analisar uma melhor forma de redirecionar as rotas para o Front
     # Essa URL está aqui para carregar o Frontend e manter a querystring da resposta do GitHub

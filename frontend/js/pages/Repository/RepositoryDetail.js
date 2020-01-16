@@ -1,14 +1,16 @@
 import React from 'react';
-import { Grid, Header, Label, Icon, Breadcrumb } from 'semantic-ui-react';
+import { Grid, Header, Label, Icon, Breadcrumb, Segment } from 'semantic-ui-react';
 import { Redirect, withRouter, Link } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 
 import AuthService from '../../services/AuthService';
-import CommitService from '../../services/CommitService';
+import ContentService from '../../services/ContentService';
+import GitHubService from '../../services/GitHubService';
 import RepositoryService from '../../services/RepositoryService';
 import LoadingDataTable from '../../components/LoadingTable';
 import LoadingHeader from '../../components/LoadingHeader';
 
-import DataTable from './DataTable';
+import ContentDataTable from './ContentDataTable';
 
 import './style.scss';
 
@@ -18,7 +20,8 @@ class RepositoryDetail extends React.Component {
 
     this.state = {
       repository: {},
-      commits: [],
+      contents: [],
+      readmeRaw: '',
       isLoading: true,
     };
   }
@@ -33,7 +36,7 @@ class RepositoryDetail extends React.Component {
     RepositoryService.fetchRepository(repositoryId)
       .then((res) => {
         this.setState({ repository: res.data });
-        this.getRepositoryCommits(res.data.pk);
+        this.getRepositoryContents(res.data.pk);
         return res;
       })
       .catch((error) => {
@@ -41,14 +44,27 @@ class RepositoryDetail extends React.Component {
       });
   }
 
-  getRepositoryCommits(repositoryId) {
-    CommitService.fetchCommits({ repository: repositoryId })
+  getRepositoryContents(repositoryId) {
+    ContentService.fetchContents({ repository: repositoryId })
       .then((res) => {
-        this.setState({ commits: res.data.results, isLoading: false });
+        this.setState({ contents: res.data.results, isLoading: false }, this.getReadmeContentRaw);
         return res;
       })
       .catch((error) => {
-        throw new Error(error.data);
+        throw new Error(error);
+      });
+  }
+
+  getReadmeContentRaw() {
+    const { repository } = this.state;
+
+    GitHubService.fetchReadmeContentRaw(repository)
+      .then((res) => {
+        this.setState({ readmeRaw: res.data });
+        return res;
+      })
+      .catch((error) => {
+        throw new Error(error);
       });
   }
 
@@ -57,7 +73,7 @@ class RepositoryDetail extends React.Component {
       return <Redirect to="/login" />;
     }
 
-    const { repository, commits, isLoading } = this.state;
+    const { repository, contents, isLoading, readmeRaw } = this.state;
     let activeTable;
     let activeHeader;
 
@@ -65,7 +81,7 @@ class RepositoryDetail extends React.Component {
       activeTable = <LoadingDataTable totalColumns={4} totalRows={10} />;
       activeHeader = <LoadingHeader />;
     } else {
-      activeTable = <DataTable dataTableList={commits} />;
+      activeTable = <ContentDataTable dataTableList={contents} />;
       activeHeader = (
         <Header as="h1" className="header-page">
           {repository.full_name}
@@ -75,7 +91,7 @@ class RepositoryDetail extends React.Component {
     }
 
     return (
-      <Grid>
+      <Grid className="repository-detail">
         <Grid.Column>
           <div className="page-header">
             <Breadcrumb>
@@ -106,6 +122,16 @@ class RepositoryDetail extends React.Component {
           </Grid.Row>
 
           <Grid.Row>{activeTable}</Grid.Row>
+
+          <Grid.Row className="readme">
+            <Header as="h5" attached="top">
+              README.md
+            </Header>
+
+            <Segment attached placeholder>
+              <ReactMarkdown source={readmeRaw} />
+            </Segment>
+          </Grid.Row>
         </Grid.Column>
       </Grid>
     );

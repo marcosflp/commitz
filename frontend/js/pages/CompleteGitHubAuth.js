@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { Message, Icon, Grid } from 'semantic-ui-react';
 
 import AuthService from '../services/AuthService';
+import UserService from '../services/UserService';
 
 class CompleteGitHubAuth extends React.Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class CompleteGitHubAuth extends React.Component {
     AuthService.authenticateUserWithGitHub(code)
       .then((res) => {
         localStorage.setItem('token', res.data.token);
+        this.saveGitHubToken();
         return res;
       })
       .catch((error) => {
@@ -36,6 +38,17 @@ class CompleteGitHubAuth extends React.Component {
       })
       .finally(() => {
         self.setState({ isAuthenticating: false });
+      });
+  }
+
+  saveGitHubToken() {
+    UserService.fetchCurrentUser()
+      .then((res) => {
+        localStorage.setItem('githubToken', res.data.results[0].githubprofile.access_token);
+        return res;
+      })
+      .catch((error) => {
+        throw new Error(error);
       });
   }
 

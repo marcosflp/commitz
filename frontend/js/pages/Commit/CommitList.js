@@ -113,9 +113,19 @@ class CommitList extends React.Component {
       repositoryDropdownValue,
     } = this.state;
     let activeTable;
+    let pagination;
 
     if (isLoadingDataTableCommits) {
       activeTable = <LoadingDataTable totalColumns={4} totalRows={10} />;
+      pagination = (
+        <Pagination
+          activePage={activePage}
+          nextItem={false}
+          prevItem={false}
+          totalPages={totalPages}
+          onPageChange={this.handlePaginationChange}
+        />
+      );
     } else {
       activeTable = <CommitDataTable dataTableCommits={dataTableCommits} />;
     }
@@ -157,15 +167,7 @@ class CommitList extends React.Component {
 
           <Grid.Row>{activeTable}</Grid.Row>
 
-          <Grid.Row className="pagination">
-            <Pagination
-              activePage={activePage}
-              nextItem={false}
-              prevItem={false}
-              totalPages={totalPages}
-              onPageChange={this.handlePaginationChange}
-            />
-          </Grid.Row>
+          <Grid.Row className="pagination">{pagination}</Grid.Row>
         </Grid.Column>
       </Grid>
     );

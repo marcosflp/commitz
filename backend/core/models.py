@@ -56,6 +56,8 @@ class Commit(models.Model):
 
 
 class Content(models.Model):
+    repository = models.ForeignKey('core.Repository', on_delete=models.CASCADE)
+
     sha = models.CharField(max_length=64, unique=True)
     name = models.CharField(max_length=128)
 

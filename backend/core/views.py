@@ -13,9 +13,10 @@ from rest_framework.views import APIView
 
 from common.exceptions import RepositoryNotBelongToUserException, RepositoryAlreadyExistsException
 from common.mixins import ValidateWebHookSignatureMixin
-from core.models import Commit, Repository
-from core.serializers import HomeSerializer, RepositorySerializer, RepositoryRegistrationSerializer, CommitSerializer
-from services.core import CommitService
+from core.models import Commit, Repository, Content
+from core.serializers import HomeSerializer, RepositorySerializer, RepositoryRegistrationSerializer, CommitSerializer, \
+    ContentSerializer
+from services.core import CommitService, ContentService
 from services.core import RepositoryService
 from services.users import GitHubProfileService
 from users.models import GitHubProfile
@@ -65,7 +66,8 @@ class RepositoryViewSet(viewsets.ModelViewSet):
                 user=request.user,
                 full_name=serializer.data['full_name'],
                 githubprofile_service=GitHubProfileService,
-                commit_service=CommitService
+                commit_service=CommitService,
+                content_service=ContentService
             )
         except github.UnknownObjectException:
             data = {'message': _('Repositório não encontrado.')}
@@ -111,3 +113,15 @@ class RepositoryWebhookView(ValidateWebHookSignatureMixin, APIView):
         )
 
         return Response({'message': 'ok'}, status=status.HTTP_200_OK)
+
+
+class ContentViewSet(viewsets.ModelViewSet):
+    serializer_class = ContentSerializer
+    filter_backends = (SearchFilter, DjangoFilterBackend)
+    filter_fields = ('repository',)
+    search_fields = ('^name',)
+
+    def get_queryset(self):
+        return Content.objects.filter(
+            repository__user=self.request.user
+        ).order_by('type', 'name')

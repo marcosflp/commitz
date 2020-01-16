@@ -39,6 +39,7 @@
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-hot-loader": "~4.12.3",
+    "react-markdown": "^4.3.1",
     "react-router-dom": "^5.1.2",
     "redux": "~4.0.0",
     "resolve-url-loader": "~3.0.0",

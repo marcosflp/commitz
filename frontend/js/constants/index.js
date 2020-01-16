@@ -22,5 +22,6 @@ const getGitHubLoginUri = () => {
 const BackEndApiURL = getBackendApiUri();
 const BackendGitHubCompleteLoginUri = getBackendGitHubCompleteLoginUri();
 const GitHubLoginUri = getGitHubLoginUri();
+const GitHubApiURL = 'https://api.github.com/';
 
-export { BackEndApiURL, BackendGitHubCompleteLoginUri, GitHubLoginUri };
+export { BackEndApiURL, BackendGitHubCompleteLoginUri, GitHubLoginUri, GitHubApiURL };
