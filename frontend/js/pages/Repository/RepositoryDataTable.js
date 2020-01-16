@@ -7,6 +7,14 @@ class RepositoryDataTable extends React.Component {
   renderTableRows() {
     const { repositories } = this.props;
 
+    if (repositories.length === 0) {
+      return (
+        <Table.Row>
+          <Table.Cell>Sem commits registrados.</Table.Cell>
+        </Table.Row>
+      );
+    }
+
     return repositories.map((data) => {
       return (
         <Table.Row key={data.pk}>

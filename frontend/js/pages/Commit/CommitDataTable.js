@@ -6,6 +6,14 @@ class CommitDataTable extends React.Component {
   renderTableRows() {
     const { dataTableCommits, onRepositoryNameClick } = this.props;
 
+    if (dataTableCommits.length === 0) {
+      return (
+        <Table.Row>
+          <Table.Cell>Sem repositórios registrados.</Table.Cell>
+        </Table.Row>
+      );
+    }
+
     return dataTableCommits.map((data) => {
       return (
         <Table.Row key={data.sha}>

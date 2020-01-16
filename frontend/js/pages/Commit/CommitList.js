@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Header, Dropdown, Icon, Pagination, Breadcrumb } from 'semantic-ui-react';
+import { Grid, Header, Dropdown, Icon, Pagination, Breadcrumb, Button } from 'semantic-ui-react';
 import { Redirect, Link } from 'react-router-dom';
 
 import AuthService from '../../services/AuthService';
@@ -45,7 +45,7 @@ class CommitList extends React.Component {
   handleRepositoryFilter(e) {
     const value = parseInt(e.target.id, 10);
     this.setState(
-      { repositoryFilteredID: value, repositoryDropdownValue: value },
+      { repositoryFilteredID: value, repositoryDropdownValue: value, activePage: 1 },
       this.updateDataTableList
     );
   }
