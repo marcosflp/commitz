@@ -5,7 +5,7 @@ from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
 from django.utils.timezone import make_aware
-from github import Github
+from github import Github, GithubException
 
 from common.exceptions import RepositoryNotBelongToUserException, RepositoryAlreadyExistsException
 from core.models import Repository
@@ -87,7 +87,13 @@ def add_and_monitor_new_repository(user, full_name, githubprofile_service, commi
 
     github_api = Github(repository.owner.githubprofile.access_token)
     git_repository = github_api.get_repo(repository.full_name)
-    git_repository.create_hook("web", config, events, active=True)
+
+    try:
+        git_repository.create_hook("web", config, events, active=True)
+    except GithubException as exc:
+        if exec.status == 422:
+            # Hook already exists for this repository
+            pass
 
     return repository
 
