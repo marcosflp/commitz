@@ -142,7 +142,8 @@ class RepositoryTest(BaseTestCase):
         query = {'owner': self.repository.owner.pk}
 
         response = self.client.get(url, query)
-        serializer = RepositorySerializer(Repository.objects.filter(owner=self.repository.owner.pk), many=True)
+        repositories = Repository.objects.filter(owner=self.repository.owner.pk).order_by('full_name')
+        serializer = RepositorySerializer(repositories, many=True)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['results'], serializer.data)
